@@ -49,7 +49,7 @@
 └── integrated_main
     ├── original_test : 객체를 탐지하고 탐지한 객체와 유사한 이미지를 검색할 test input 이미지 디렉토리
     ├── original_train : 유사 객체 DB를 생성하기 위한 train input 이미지 디렉토리
-    ├── deteted_data
+    ├── detected_data
          ├── detected_from_test : original_test에서 탐지한 객체들
          └── detect_from_train :  original_train에서 탐지한 유사객체 DB
 

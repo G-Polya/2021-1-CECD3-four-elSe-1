@@ -23,7 +23,7 @@ from src.pretrained_model import Pretrained_Model
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 
-def image_retrieval():
+def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
     # Run mode: (autoencoder -> simpleAE, convAE) or (transfer learning -> vgg19)
     modelName = "stackedAE"  # try: "simpleAE", "convAE", "vgg19" , "IncepResNet"
     trainModel = True
