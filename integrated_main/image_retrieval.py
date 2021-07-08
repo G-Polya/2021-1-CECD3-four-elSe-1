@@ -17,8 +17,10 @@ from src.CV_IO_utils import read_imgs_dir
 from src.CV_transform_utils import apply_transformer
 from src.CV_transform_utils import resize_img, normalize_img
 from src.CV_plot_utils import plot_query_retrieval, plot_tsne, plot_reconstructions
-from src.autoencoder import AutoEncoder
-from src.pretrained_model import Pretrained_Model
+from src.AutoencoderRetrievalModel import AutoencoderRetrievalModel
+from src.PretrainedModel import PretrainedModel
+from src.AbstractAE import AbstractAE
+
 
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
@@ -31,7 +33,7 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
 
     # Make paths
     dataTrainDir = os.path.join(os.getcwd(), "detected_data", "detected_from_train")
-    dataTestDir = os.path.join(os.getcwd(), "detected_data", "detected_from_test")
+    dataQueryDir = os.path.join(os.getcwd(), "detected_data", "detected_from_test")
     outDir = os.path.join(os.getcwd(), "retrieval_output", modelName)
     if not os.path.exists(outDir):
         os.makedirs(outDir)
@@ -40,8 +42,8 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
     extensions = [".jpg", ".jpeg"]
     print("Reading train images from '{}'...".format(dataTrainDir))
     imgs_train = read_imgs_dir(dataTrainDir, extensions, parallel=parallel)
-    print("Reading test images from '{}'...".format(dataTestDir))
-    imgs_test = read_imgs_dir(dataTestDir, extensions, parallel=parallel)
+    print("Reading test images from '{}'...".format(dataQueryDir))
+    imgs_test = read_imgs_dir(dataQueryDir, extensions, parallel=parallel)
     shape_img = imgs_train[0].shape
     print("Image shape = {}".format(shape_img))
 
@@ -49,8 +51,7 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
 
     # Build models
     if modelName in ["simpleAE", "convAE", "stackedAE"]:
-
-        # Set up autoencoder
+     # Set up autoencoder
         info = {
             "shape_img": shape_img,
             "autoencoderFile": os.path.join(outDir, "{}_autoecoder.h5".format(modelName)),
@@ -58,21 +59,21 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
             "decoderFile": os.path.join(outDir, "{}_decoder.h5".format(modelName)),
             "checkpoint" : os.path.join(outDir,"{}_checkpoint.h5".format(modelName))
         }
-        model = AutoEncoder(modelName, info)
+        model = AutoencoderRetrievalModel(modelName, info)
         model.set_arch()
 
         shape_img_resize = model.getShape_img()
-        input_shape_model = model.getInputShape()
-        output_shape_model = model.getOutputShape()
+        input_shape_model = model.getInputshape()
+        output_shape_model = model.getOutputshape()
         
-        n_epochs = 100 
-        
+        n_epochs = 30
 
     elif modelName in ["vgg19", "ResNet50v2", "IncepResNet"]:
-        pretrainedModel = Pretrained_Model(modelName,shape_img)
+        pretrainedModel = PretrainedModel(modelName,shape_img)
         model = pretrainedModel.buildModel()
         shape_img_resize, input_shape_model, output_shape_model = pretrainedModel.makeInOut()
        
+
 
     else:
         raise Exception("Invalid modelName!")
@@ -108,9 +109,8 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
     print(" -> X_test.shape = {}".format(X_test.shape))
 
     # Train (if necessary)
-    if modelName in ["simpleAE", "convAE", "stackedAE"]:
+    if isinstance(model, AbstractAE):
         if trainModel:
-            
             print('Number of devices: {}'.format(
                 strategy.num_replicas_in_sync))
             with strategy.scope():
@@ -127,6 +127,7 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
             model.save_models()
         else:
             model.load_models(loss="binary_crossentropy", optimizer="adam")
+ 
 
     # Create embeddings using model
     print("Inferencing embeddings using pre-trained model...")
