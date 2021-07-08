@@ -127,25 +127,7 @@ def image_retrieval():
             model.save_models()
         else:
             model.load_models(loss="binary_crossentropy", optimizer="adam")
-    # if modelName in ["simpleAE", "Resnet50AE", "stackedAE"]:
-    #     if trainModel:
-            
-    #         print('Number of devices: {}'.format(
-    #             strategy.num_replicas_in_sync))
-    #         with strategy.scope():
-    #             model.compile(loss="binary_crossentropy", optimizer="adam")
-            
-    #         early_stopping = EarlyStopping(monitor="val_loss", mode="min", verbose=1,patience=6, min_delta=0.0001)
-    #         checkpoint = ModelCheckpoint(
-    #                 os.path.join(outDir,"{}_checkpoint.h5".format(modelName)),
-    #                 monitor="val_loss",
-    #                 mode="min",
-    #                 save_best_only=True)
-            
-    #         model.fit(X_train, n_epochs=n_epochs, batch_size=32,callbacks=[early_stopping, checkpoint])
-    #         model.save_models()
-    #     else:
-    #         model.load_models(loss="binary_crossentropy", optimizer="adam")
+ 
 
     # Create embeddings using model
     print("Inferencing embeddings using pre-trained model...")
