@@ -166,6 +166,7 @@ def image_retrieval():
         img_query = imgs_test[i]  # query image
         imgs_retrieval = [imgs_train[idx]
                           for idx in indices.flatten()]  # retrieval images
+                          
         outFile = os.path.join(
             outDir, "{}_retrieval_{}.png".format(modelName, i))
         plot_query_retrieval(img_query, imgs_retrieval, outFile)
