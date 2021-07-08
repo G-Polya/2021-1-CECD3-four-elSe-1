@@ -19,6 +19,7 @@ from src.CV_transform_utils import resize_img, normalize_img
 from src.CV_plot_utils import plot_query_retrieval, plot_tsne, plot_reconstructions
 from src.AutoencoderRetrievalModel import AutoencoderRetrievalModel
 from src.PretrainedModel import PretrainedModel
+from src.AbstractAE import AbstractAE
 
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
@@ -108,9 +109,8 @@ def image_retrieval():
     print(" -> X_test.shape = {}".format(X_test.shape))
 
     # Train (if necessary)
-    if modelName in ["simpleAE", "Resnet50AE", "stackedAE"]:
+    if isinstance(model, AbstractAE):
         if trainModel:
-            
             print('Number of devices: {}'.format(
                 strategy.num_replicas_in_sync))
             with strategy.scope():
@@ -127,6 +127,25 @@ def image_retrieval():
             model.save_models()
         else:
             model.load_models(loss="binary_crossentropy", optimizer="adam")
+    # if modelName in ["simpleAE", "Resnet50AE", "stackedAE"]:
+    #     if trainModel:
+            
+    #         print('Number of devices: {}'.format(
+    #             strategy.num_replicas_in_sync))
+    #         with strategy.scope():
+    #             model.compile(loss="binary_crossentropy", optimizer="adam")
+            
+    #         early_stopping = EarlyStopping(monitor="val_loss", mode="min", verbose=1,patience=6, min_delta=0.0001)
+    #         checkpoint = ModelCheckpoint(
+    #                 os.path.join(outDir,"{}_checkpoint.h5".format(modelName)),
+    #                 monitor="val_loss",
+    #                 mode="min",
+    #                 save_best_only=True)
+            
+    #         model.fit(X_train, n_epochs=n_epochs, batch_size=32,callbacks=[early_stopping, checkpoint])
+    #         model.save_models()
+    #     else:
+    #         model.load_models(loss="binary_crossentropy", optimizer="adam")
 
     # Create embeddings using model
     print("Inferencing embeddings using pre-trained model...")
