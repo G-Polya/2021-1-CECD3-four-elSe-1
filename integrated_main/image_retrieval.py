@@ -30,9 +30,9 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
     parallel = False  # use multicore processing
 
     # Make paths
-    dataTrainDir = os.path.join(os.getcwd(), "data", "train")
-    dataTestDir = os.path.join(os.getcwd(), "data", "test")
-    outDir = os.path.join(os.getcwd(), "output", modelName)
+    dataTrainDir = os.path.join(os.getcwd(), "detected_data", "detected_from_train")
+    dataTestDir = os.path.join(os.getcwd(), "detected_data", "detected_from_test")
+    outDir = os.path.join(os.getcwd(), "retrieval_output", modelName)
     if not os.path.exists(outDir):
         os.makedirs(outDir)
 
