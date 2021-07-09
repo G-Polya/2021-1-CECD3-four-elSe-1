@@ -41,7 +41,7 @@ class ImageRetrievalClass:
         self.strategy = tf.distribute.MirroredStrategy()
 
     def buildModel(self):
-        if self.modelName in ["simpleAE", "Resnet50AE", "stackedAE"]:
+        if self.modelName in ["simpleAE", "Resnet50AE", "stackedAE","vggAE"]:
             info = {
                 "shape_img": self.shape_img,
                 "autoencoderFile": os.path.join(self.outDir, "{}_autoecoder.h5".format(self.modelName)),
@@ -138,8 +138,7 @@ class ImageRetrievalClass:
                                  range_imgs=[0, 255],
                                  range_imgs_reconstruct=[0, 1])
 
-    def similarityCalculator(self,E_train):
-        E_train_flatten = E_train.reshape((-1, np.prod(self.output_shape_model)))
+    def similarityCalculator(self,E_train_flatten):
         print("Fitting k-nearest-neighbour model on training images...")
         calculator = NearestNeighbors(n_neighbors=5, metric="cosine")
         calculator.fit(E_train_flatten)
@@ -149,10 +148,12 @@ class ImageRetrievalClass:
     def retrieval(self,E_test, calculator):
         print("Performing image retrieval on test images...")
         
-        E_test_flatten = E_test.reshape((-1, np.prod(self.output_shape_model)))
-        for i, emb_flatten in enumerate(E_test_flatten):
+        # E_test_flatten = E_test.reshape((-1, np.prod(self.output_shape_model)))
+        for i, emb_flatten in enumerate(E_test):
             # find k nearest train neighbours
             _, indices = calculator.kneighbors([emb_flatten])
+            print("E_test.shape : ", E_test.shape)
+            print("len(imgs_test) : ", len(self.imgs_test))
             img_query = self.imgs_test[i]  # query image
             imgs_retrieval = [self.imgs_train[idx]
                             for idx in indices.flatten()]  # retrieval images
