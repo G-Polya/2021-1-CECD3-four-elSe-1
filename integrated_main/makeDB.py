@@ -40,20 +40,19 @@ inputData_list = os.listdir(os.getcwd())
 os.chdir('../')
 
 
-from object_detection3 import object_detection
+from .object_detection3 import object_detection
 object_detection(retina_model, inputData_list, dataset_path, output_path)
 
 # image retrieval
 from image_retrieval import image_retrieval
 from tqdm import tqdm
 
-images_path = glob("./retrieval_data/train/*.jpg")
+images_path = glob(output_path+"*.jpg")
 
 for path in tqdm(images_path):
     image_pil = Image.open(path)
     image_resized = image_pil.resize((512,512))
     image_resized.save(path)
-    
 # try: "simpleAE", "convAE", "vgg19" , "IncepResNet", "ResNet50v2"
 #     modelName = "IncepResNet"  # try: "simpleAE", "convAE", "vgg19" , "IncepResNet", "ResNet50v2"
 #     trainModel = True
