@@ -40,11 +40,7 @@ inputData_list = os.listdir(os.getcwd())
 os.chdir('../')
 
 
-<<<<<<< HEAD
 from object_detection import object_detection
-=======
-from .object_detection3 import object_detection
->>>>>>> 22b362f4303dc02dc3d8d134ece1063e699d09a2
 object_detection(retina_model, inputData_list, dataset_path, output_path)
 
 # image retrieval
@@ -57,12 +53,4 @@ for path in tqdm(images_path):
     image_pil = Image.open(path)
     image_resized = image_pil.resize((512,512))
     image_resized.save(path)
-<<<<<<< HEAD
     
-=======
-# try: "simpleAE", "convAE", "vgg19" , "IncepResNet", "ResNet50v2"
-#     modelName = "IncepResNet"  # try: "simpleAE", "convAE", "vgg19" , "IncepResNet", "ResNet50v2"
-#     trainModel = True
-#     parallel = False  # use multicore processing
-# image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False)
->>>>>>> 22b362f4303dc02dc3d8d134ece1063e699d09a2
