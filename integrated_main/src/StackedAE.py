@@ -23,17 +23,17 @@ class StackedAE(AbstractAE):
         self.encoded = keras.layers.MaxPool2D(pool_size=2, strides=2, padding="valid")(x)
         
         # decoder
-        x = keras.layers.Conv2D(512, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001),activation="relu", padding="same",name="Decoding_Conv2D_1")(self.encoded)
+        x = keras.layers.Conv2DTranspose(512, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001),activation="relu", padding="same",name="Decoding_Conv2D_1")(self.encoded)
         x = keras.layers.UpSampling2D(size=2,name="Decoding_UpSampling2D_1")(x)
-        x = keras.layers.Conv2D(512, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_2")(x)
+        x = keras.layers.Conv2DTranspose(512, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_2")(x)
         x = keras.layers.UpSampling2D(size=2,name="Decoding_UpSampling2D_2")(x)
-        x = keras.layers.Conv2D(256, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_3")(x)
+        x = keras.layers.Conv2DTranspose(256, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_3")(x)
         x = keras.layers.UpSampling2D(size=2,name="Decoding_UpSampling2D_3")(x)
-        x = keras.layers.Conv2D(128, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_4")(x)
+        x = keras.layers.Conv2DTranspose(128, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_4")(x)
         x = keras.layers.UpSampling2D(size=2,name="Decoding_UpSampling2D_4")(x)
-        x = keras.layers.Conv2D(64, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_5")(x)
+        x = keras.layers.Conv2DTranspose(64, kernel_size=(3,3), kernel_regularizer=keras.regularizers.l2(0.001), activation="relu", padding="same",name="Decoding_Conv2D_5")(x)
         x = keras.layers.UpSampling2D(size=2,name="Decoding_UpSampling2D_5")(x)
-        self.decoded = keras.layers.Conv2D(3, kernel_size=(3,3),padding="same",activation="sigmoid",name="Decoding_output")(x)
+        self.decoded = keras.layers.Conv2DTranspose(3, kernel_size=(3,3),padding="same",activation="sigmoid",name="Decoding_output")(x)
         
         self.autoencoder = keras.Model(self.input, self.decoded)
         return self.autoencoder

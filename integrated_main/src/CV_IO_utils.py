@@ -6,6 +6,7 @@
 import os
 import skimage.io
 from multiprocessing import Pool
+import numpy as np
 
 # Read image
 def read_img(filePath):
@@ -28,3 +29,8 @@ def read_imgs_dir(dirPath, extensions, parallel=True):
 # Save image to file
 def save_img(filePath, img):
     skimage.io.imsave(filePath, img)
+
+def read_imgs_list(detected_images):
+    
+    images = [np.asarray(img) for img in detected_images] # img : image pillow type
+    return images

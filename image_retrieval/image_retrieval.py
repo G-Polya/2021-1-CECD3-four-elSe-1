@@ -20,6 +20,7 @@ from src.CV_plot_utils import plot_query_retrieval, plot_tsne, plot_reconstructi
 from src.AutoencoderRetrievalModel import AutoencoderRetrievalModel
 from src.PretrainedModel import PretrainedModel
 from src.AbstractAE import AbstractAE
+from sklearn.decomposition import PCA
 
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
@@ -108,6 +109,9 @@ def image_retrieval():
     print(" -> X_train.shape = {}".format(X_train.shape))
     print(" -> X_test.shape = {}".format(X_test.shape))
 
+
+
+
     # Train (if necessary)
     if isinstance(model, AbstractAE):
         if trainModel:
@@ -127,25 +131,7 @@ def image_retrieval():
             model.save_models()
         else:
             model.load_models(loss="binary_crossentropy", optimizer="adam")
-    # if modelName in ["simpleAE", "Resnet50AE", "stackedAE"]:
-    #     if trainModel:
-            
-    #         print('Number of devices: {}'.format(
-    #             strategy.num_replicas_in_sync))
-    #         with strategy.scope():
-    #             model.compile(loss="binary_crossentropy", optimizer="adam")
-            
-    #         early_stopping = EarlyStopping(monitor="val_loss", mode="min", verbose=1,patience=6, min_delta=0.0001)
-    #         checkpoint = ModelCheckpoint(
-    #                 os.path.join(outDir,"{}_checkpoint.h5".format(modelName)),
-    #                 monitor="val_loss",
-    #                 mode="min",
-    #                 save_best_only=True)
-            
-    #         model.fit(X_train, n_epochs=n_epochs, batch_size=32,callbacks=[early_stopping, checkpoint])
-    #         model.save_models()
-    #     else:
-    #         model.load_models(loss="binary_crossentropy", optimizer="adam")
+ 
 
     # Create embeddings using model
     print("Inferencing embeddings using pre-trained model...")
@@ -163,11 +149,10 @@ def image_retrieval():
         print("Visualizing database image reconstructions...")
         imgs_train_reconstruct = model.decoder.predict(E_train)
         if modelName == "simpleAE":
-            imgs_train_reconstruct = imgs_train_reconstruct.reshape(
-                (-1,) + shape_img_resize)
-        plot_reconstructions(imgs_train, imgs_train_reconstruct,
-                             os.path.join(
-                                 outDir, "{}_reconstruct.png".format(modelName)),
+            imgs_train_reconstruct = imgs_train_reconstruct.reshape((-1,) + shape_img_resize)
+        plot_reconstructions(imgs_train, 
+                             imgs_train_reconstruct,
+                             os.path.join(outDir, "{}_reconstruct.png".format(modelName)),
                              range_imgs=[0, 255],
                              range_imgs_reconstruct=[0, 1])
 
@@ -184,6 +169,7 @@ def image_retrieval():
         img_query = imgs_test[i]  # query image
         imgs_retrieval = [imgs_train[idx]
                           for idx in indices.flatten()]  # retrieval images
+                          
         outFile = os.path.join(
             outDir, "{}_retrieval_{}.png".format(modelName, i))
         plot_query_retrieval(img_query, imgs_retrieval, outFile)
