@@ -1,9 +1,8 @@
-import json
 import uuid
 
-def jsonFormatter(b,label,img_name,croppedImg,filename):
+def dictformat(b, label, img_name, objectPath):
+    format = {
 
-    detected = {
         "objectID": str(uuid.uuid4()),
         "location":{
             "xmin":b[1].item(),
@@ -12,13 +11,8 @@ def jsonFormatter(b,label,img_name,croppedImg,filename):
             "ymax":b[2].item()
         },
         "tag": str(label),
-        "croppedImage":croppedImg,
+        "objectPath":objectPath,
         "IMG_URL" : img_name
     }
-    
-    
 
-    with open(filename,"w") as outFile:
-        json.dump(detected, outFile, indent=4)
-
-
+    return format 

@@ -85,6 +85,7 @@ def object_detection(model, inputData_list, dataset_path,output_path):
         boxes /= scale
 
         # visualize detections
+        detected_images = list()
         for box, score, label in zip(boxes[0], scores[0], labels[0]):
             # scores are sorted so we can break
             if score < 0.5:

@@ -111,7 +111,6 @@ def object_detection(model, inputData_list, dataset_path,output_path):
             # object_img.save(output_path + "{}_path: ({}).jpg".format(labels_to_names_seq[label]+str(labels_to_num[label]),imagePath_str))
             tag = labels_to_names_seq[label]
             filename = output_path + "{}_path: ({}).json".format(labels_to_names_seq[label]+str(labels_to_num[label]),imagePath_str)
-            
             jsonFormatter(b, tag,img_name,cropped_img, filename)
             # os.chdir('../')
     
