@@ -92,6 +92,7 @@ class ImageRetrievalClass:
 
         self.X_train = np.array(imgs_train_transformed).reshape((-1,) + self.input_shape_model)
         print(" -> X_train.shape = {}".format(self.X_train.shape))
+        return self.X_train
 
     def testTransform(self):
 
@@ -101,10 +102,10 @@ class ImageRetrievalClass:
 
         self.X_test = np.array(imgs_test_transformed).reshape((-1,) + self.input_shape_model)
         print(" -> X_train.shape = {}".format(self.X_test.shape))
+        return self.X_test
 
-
-    def train(self):
-       
+    def train(self, X_train):
+        
 
         if isinstance(self.model, AbstractAE):
             if self.trainModel:
@@ -120,24 +121,24 @@ class ImageRetrievalClass:
                         mode="min",
                         save_best_only=True)
                 
-                self.model.fit(self.X_train, n_epochs=30, batch_size=32,callbacks=[early_stopping, checkpoint])
+                self.model.fit(X_train, n_epochs=30, batch_size=32,callbacks=[early_stopping, checkpoint])
                 self.model.save_models()
             else:
                 self.model.load_models(loss="binary_crossentropy", optimizer="adam")
 
-    def predictTrain(self):
+    def predictTrain(self, X_train):
         
         print("Inferencing embeddings using pre-trained model...")
-        self.E_train = self.model.predict(self.X_train)
+        self.E_train = self.model.predict(X_train)
         E_train_flatten = self.E_train.reshape((-1, np.prod(self.output_shape_model)))
         print(" -> E_train.shape = {}".format(self.E_train.shape))
         print(" -> E_train_flatten.shape = {}".format(E_train_flatten.shape))
         return self.E_train
 
-    def predictTest(self):
+    def predictTest(self, X_test):
         
         print("Inferencing embeddings using pre-trained model...")
-        self.E_test = self.model.predict(self.X_test)
+        self.E_test = self.model.predict(X_test)
         E_test_flatten = self.E_train.reshape((-1, np.prod(self.output_shape_model)))
         print(" -> E_train.shape = {}".format(self.E_test.shape))
         print(" -> E_train_flatten.shape = {}".format(E_test_flatten.shape))
