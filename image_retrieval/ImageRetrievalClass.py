@@ -145,15 +145,14 @@ class ImageRetrievalClass:
 
         return calculator
     
-    def retrieval(self,E_test, calculator):
+    def retrieval(self,E_test_flatten, calculator):
         print("Performing image retrieval on test images...")
         
         # E_test_flatten = E_test.reshape((-1, np.prod(self.output_shape_model)))
-        for i, emb_flatten in enumerate(E_test):
+        for i, emb_flatten in enumerate(E_test_flatten):
             # find k nearest train neighbours
             _, indices = calculator.kneighbors([emb_flatten])
-            print("E_test.shape : ", E_test.shape)
-            print("len(imgs_test) : ", len(self.imgs_test))
+         
             img_query = self.imgs_test[i]  # query image
             imgs_retrieval = [self.imgs_train[idx]
                             for idx in indices.flatten()]  # retrieval images
