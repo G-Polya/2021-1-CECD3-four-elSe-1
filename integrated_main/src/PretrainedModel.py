@@ -17,10 +17,10 @@ class PretrainedModel:
             self.model = keras.applications.InceptionResNetV2(weights="imagenet", include_top=False, input_shape=self.shape_img)
         elif self.modelName == "ResNet50v2":
             print("Loading ResNet50v2 pre-trained model...")
-            self.model = keras.applications.ResNet50V2(
-            weights="imagenet", include_top=False, input_shape=self.shape_img)
+            self.model = keras.applications.ResNet50V2(weights="imagenet", include_top=False, input_shape=self.shape_img)
         
         self.model.summary()
+
         
         return self.model
 

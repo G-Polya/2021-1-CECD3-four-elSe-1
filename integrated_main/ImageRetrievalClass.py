@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 import keras
 from sklearn.neighbors import NearestNeighbors
-from src.CV_IO_utils import read_imgs_dir, read_imgs_list
+from src.CV_IO_utils import read_imgs_dir, read_imgs_list, read_one_image
 from src.CV_transform_utils import apply_transformer
 from src.CV_transform_utils import resize_img, normalize_img
 from src.CV_plot_utils import plot_query_retrieval, plot_tsne, plot_reconstructions
@@ -42,18 +42,18 @@ class ImageRetrievalClass:
 
     def readTrainSet(self, detected_train):
         # Read images
-        extensions = [".jpg", ".jpeg"]
+        
         print("Reading train images")
         self.imgs_train = read_imgs_list(detected_train)
         self.shape_img = self.imgs_train[0].shape
       
-        print("Image shape = {}".format(self.shape_img))
+        print("train image shape = {}".format(self.shape_img))
 
     def readTestSet(self, detected_test):
-        extensions = [".jpg", ".jpeg"]
         print("Reading train images")
-        self.imgs_test = read_imgs_list(detected_test)
-    
+        self.imgs_test = read_one_image(detected_test)
+        self.shape_img = self.imgs_test[0].shape
+        print("test image shape = {}".format(self.shape_img))
     
 
     def buildModel(self):
@@ -101,7 +101,7 @@ class ImageRetrievalClass:
         imgs_test_transformed = apply_transformer(self.imgs_test, transformer, parallel=self.parallel)
 
         self.X_test = np.array(imgs_test_transformed).reshape((-1,) + self.input_shape_model)
-        print(" -> X_train.shape = {}".format(self.X_test.shape))
+        print(" -> X_test.shape = {}".format(self.X_test.shape))
         return self.X_test
 
     def train(self, X_train):
@@ -139,7 +139,7 @@ class ImageRetrievalClass:
         
         print("Inferencing embeddings using pre-trained model...")
         self.E_test = self.model.predict(X_test)
-        E_test_flatten = self.E_train.reshape((-1, np.prod(self.output_shape_model)))
+        E_test_flatten = self.E_test.reshape((-1, np.prod(self.output_shape_model)))
         print(" -> E_train.shape = {}".format(self.E_test.shape))
         print(" -> E_train_flatten.shape = {}".format(E_test_flatten.shape))
         return self.E_test

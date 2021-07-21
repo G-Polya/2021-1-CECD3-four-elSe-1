@@ -34,3 +34,7 @@ def read_imgs_list(detected_images):
     
     images = [np.asarray(img) for img in detected_images] # img : image pillow type
     return images
+
+def read_one_image(selected_image):
+    return [np.asarray(selected_image)]
+    
