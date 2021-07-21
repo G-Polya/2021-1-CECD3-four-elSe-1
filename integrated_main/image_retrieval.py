@@ -27,7 +27,7 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
     # Run mode: (autoencoder -> simpleAE, convAE) or (transfer learning -> vgg19)
-    modelName = "stackedAE"  # try: "simpleAE", "convAE", "vgg19" , "IncepResNet"
+    modelName = "ResNet50v2"  # try: "simpleAE", "convAE", "vgg19" , "IncepResNet"
     trainModel = True
     parallel = False  # use multicore processing
 
@@ -95,15 +95,12 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
 
     transformer = ImageTransformer(shape_img_resize)
     print("Applying image transformer to training images...")
-    imgs_train_transformed = apply_transformer(
-        imgs_train, transformer, parallel=parallel)
+    imgs_train_transformed = apply_transformer(imgs_train, transformer, parallel=parallel)
     print("Applying image transformer to test images...")
-    imgs_test_transformed = apply_transformer(
-        imgs_test, transformer, parallel=parallel)
+    imgs_test_transformed = apply_transformer(imgs_test, transformer, parallel=parallel)
 
     # Convert images to numpy array
-    X_train = np.array(imgs_train_transformed).reshape(
-        (-1,) + input_shape_model)
+    X_train = np.array(imgs_train_transformed).reshape((-1,) + input_shape_model)
     X_test = np.array(imgs_test_transformed).reshape((-1,) + input_shape_model)
     print(" -> X_train.shape = {}".format(X_train.shape))
     print(" -> X_test.shape = {}".format(X_test.shape))
@@ -145,11 +142,10 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
         print("Visualizing database image reconstructions...")
         imgs_train_reconstruct = model.decoder.predict(E_train)
         if modelName == "simpleAE":
-            imgs_train_reconstruct = imgs_train_reconstruct.reshape(
-                (-1,) + shape_img_resize)
+            imgs_train_reconstruct = imgs_train_reconstruct.reshape((-1,) + shape_img_resize)
+        
         plot_reconstructions(imgs_train, imgs_train_reconstruct,
-                             os.path.join(
-                                 outDir, "{}_reconstruct.png".format(modelName)),
+                             os.path.join(outDir, "{}_reconstruct.png".format(modelName)),
                              range_imgs=[0, 255],
                              range_imgs_reconstruct=[0, 1])
 
@@ -166,8 +162,7 @@ def image_retrieval(modelName="ResNet50v2",trainModel=True, parallel=False):
         img_query = imgs_test[i]  # query image
         imgs_retrieval = [imgs_train[idx]
                           for idx in indices.flatten()]  # retrieval images
-        outFile = os.path.join(
-            outDir, "{}_retrieval_{}.png".format(modelName, i))
+        outFile = os.path.join(outDir, "{}_retrieval_{}.png".format(modelName, i))
         plot_query_retrieval(img_query, imgs_retrieval, outFile)
 
     # Plot t-SNE visualization

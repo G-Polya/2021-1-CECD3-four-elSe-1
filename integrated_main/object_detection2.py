@@ -116,7 +116,7 @@ def object_detection(model, inputData_list, dataset_path,output_path):
                     "ymax":b[2].item()
                 },
                 "tag": str(tag),
-                "objectPath" : filename,
+                "objectImagePath" : filename,
                 "IMG_URL" : img_name
             }
 

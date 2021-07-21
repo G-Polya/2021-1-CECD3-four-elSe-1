@@ -36,9 +36,9 @@ class ImageRetrievalClass:
             # Make paths
         # self.dataTrainDir = os.path.join(os.getcwd(), "detected_data", "detected_from_train")
         # self.dataTestDir = os.path.join(os.getcwd(), "detected_data", "detected_from_test")
-        # self.outDir = os.path.join(os.getcwd(), "retrieval_output", self.modelName)
-        # if not os.path.exists(self.outDir):
-        #     os.makedirs(self.outDir)
+        self.outDir = os.path.join(os.getcwd(), "retrieval_output", self.modelName)
+        if not os.path.exists(self.outDir):
+            os.makedirs(self.outDir)
 
     def readTrainSet(self, detected_train):
         # Read images
@@ -140,7 +140,31 @@ class ImageRetrievalClass:
         print("Inferencing embeddings using pre-trained model...")
         self.E_test = self.model.predict(X_test)
         E_test_flatten = self.E_test.reshape((-1, np.prod(self.output_shape_model)))
-        print(" -> E_train.shape = {}".format(self.E_test.shape))
-        print(" -> E_train_flatten.shape = {}".format(E_test_flatten.shape))
+        print(" -> E_test.shape = {}".format(self.E_test.shape))
+        print(" -> E_test_flatten.shape = {}".format(E_test_flatten.shape))
         return self.E_test
     
+    def similarityCalculator(self, E_train_flatten):
+        print("Fitting k-nearest-neighbour model on training images...")
+        calculator = NearestNeighbors(n_neighbors=5, metric="cosine") # 팩토리와 AbstractCalculator 만들어서 OCP에 맞게 모듈화하기
+        calculator.fit(E_train_flatten)
+
+        return calculator
+
+
+    # retrievalPool means detected-images queryed by tag 
+    def retrieval(self,E_test_flatten, calculator, retrieval_imagePool):
+        print("Performing image retrieval on test images...")
+
+        # E_test_flatten = E_test.reshape((-1, np.prod(self.output_shape_model)))
+        for i, emb_flatten in enumerate(E_test_flatten):
+            # find k nearest train neighbours
+            _, indices = calculator.kneighbors([emb_flatten])
+            
+            imgs_train = read_imgs_list(retrieval_imagePool)
+
+            img_query = self.imgs_test[i]  # query image
+            imgs_retrieval = [imgs_train[idx] for idx in indices.flatten()]  # retrieval images
+                            
+            outFile = os.path.join(self.outDir, "{}_retrieval_{}.png".format(self.modelName, i))
+            plot_query_retrieval(img_query, imgs_retrieval, outFile)
