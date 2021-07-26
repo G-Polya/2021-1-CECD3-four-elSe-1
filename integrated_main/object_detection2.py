@@ -105,7 +105,7 @@ def object_detection(model, inputData_list, dataset_path,output_path):
             # 객체 dump
             # os.chdir(output_path)
             tag = labels_to_names_seq[label]
-            filename = output_path + "{}_path: ({}).jpg".format(labels_to_names_seq[label]+str(labels_to_num[label]),imagePath_str)
+            filename = output_path + "{}_path_({}).jpg".format(labels_to_names_seq[label]+str(labels_to_num[label]),imagePath_str)
             object_img.save(filename)
             format = {
                 "objectID" : str(uuid.uuid4()),
