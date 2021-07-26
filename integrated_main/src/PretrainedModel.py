@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-import keras
+# import keras
 
 class PretrainedModel:
     def __init__(self, modelName,shape_img):
@@ -11,16 +11,19 @@ class PretrainedModel:
     def buildModel(self):
         if self.modelName == "vgg19":
             print("Loading VGG19 pre-trained model...")
-            self.model = keras.applications.VGG19(weights='imagenet', include_top=False,input_shape=self.shape_img)
+            self.model = tf.keras.applications.vgg19.VGG19(weights='imagenet', include_top=False,input_shape=self.shape_img)
         elif self.modelName == "IncepResNet":
             print("Loading IncepResNet pre-trained model...")
-            self.model = keras.applications.InceptionResNetV2(weights="imagenet", include_top=False, input_shape=self.shape_img)
+            self.model = tf.keras.applications.inception_resnet_v2.InceptionResNetV2(weights="imagenet", include_top=False, input_shape=self.shape_img)
         elif self.modelName == "ResNet50v2":
             print("Loading ResNet50v2 pre-trained model...")
-            self.model = keras.applications.ResNet50V2(weights="imagenet", include_top=False, input_shape=self.shape_img)
+            self.model = tf.keras.applications.resnet_v2.ResNet50V2(weights="imagenet", include_top=False, input_shape=self.shape_img)
+        elif self.modelName=="EfficientNet":
+            print("Loading EfficientNet pre-trained model...")
+            self.model = tf.keras.applications.efficientnet.EfficientNetB7(weights="imagenet", include_top=False, input_shape=self.shape_img)
+            # self.model = tf.keras.applications.efficientnet.EfficientNetB7(weights="imagenet", include_top=False, input_shape=self.shape_img)
         
         self.model.summary()
-
         
         return self.model
 

@@ -3,7 +3,7 @@ from multiprocessing import freeze_support
 import os
 import numpy as np
 import tensorflow as tf
-import keras
+# import keras
 from sklearn.neighbors import NearestNeighbors
 from src.CV_IO_utils import read_imgs_dir, read_imgs_list, read_one_image
 from src.CV_transform_utils import apply_transformer
