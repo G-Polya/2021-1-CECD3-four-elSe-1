@@ -1,4 +1,4 @@
-import keras
+import tensorflow as tf
 import numpy as np
 from .AbstractAE import AbstractAE
 
@@ -12,15 +12,15 @@ class SimpleAE(AbstractAE):
 
         encode_dim = 128
 
-        self.input = keras.Input(shape=shape_img_flattened)
-        self.encoded = keras.layers.Dense(encode_dim, activation="relu")(self.input)
-        self.decoded = keras.layers.Dense(shape_img_flattened[0], activation='sigmoid')(self.encoded)
+        self.input = tf.keras.Input(shape=shape_img_flattened)
+        self.encoded = tf.keras.layers.Dense(encode_dim, activation="relu")(self.input)
+        self.decoded = tf.keras.layers.Dense(shape_img_flattened[0], activation='sigmoid')(self.encoded)
 
-        self.autoencoder = keras.Model(self.input, self.decoded)
+        self.autoencoder = tf.keras.Model(self.input, self.decoded)
         return self.autoencoder
 
     def makeEncoder(self):
-        self.encoder = keras.Model(self.input, self.encoded)
+        self.encoder = tf.keras.Model(self.input, self.encoded)
         return self.encoder
 
     def makeDecoder(self):
@@ -31,10 +31,10 @@ class SimpleAE(AbstractAE):
         # input_encoder_shape = self.encoder.layers[0].input_shape[1:]
         output_encoder_shape = self.encoder.layers[-1].output_shape[1:]
 
-        decoded_input = keras.Input(shape=output_encoder_shape)
+        decoded_input = tf.keras.Input(shape=output_encoder_shape)
         decoded_output = self.autoencoder.layers[-1](decoded_input)
 
-        self.decoder = keras.Model(decoded_input, decoded_output)
+        self.decoder = tf.keras.Model(decoded_input, decoded_output)
         return self.decoder
 
     def getInputshape(self):
