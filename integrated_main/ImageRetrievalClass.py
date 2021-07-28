@@ -14,7 +14,7 @@ from src.PretrainedModel import PretrainedModel
 from src.AbstractAE import AbstractAE
 from sklearn.decomposition import PCA
 
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 class ImageTransformer(object):
     def __init__(self, shape_resize):
@@ -72,7 +72,7 @@ class ImageRetrievalClass:
             self.input_shape_model = self.model.getInputshape()
             self.output_shape_model = self.model.getOutputshape()
         
-        elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet"]:
+        elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet", "EfficientNet"]:
             pretrainedModel = PretrainedModel(self.modelName,self.shape_img)
             self.model = pretrainedModel.buildModel()
             self.shape_img_resize, self.input_shape_model, self.output_shape_model = pretrainedModel.makeInOut()

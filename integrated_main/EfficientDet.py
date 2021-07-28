@@ -161,7 +161,8 @@ def object_detection(model, inputData_list, dataset_path, output_path):
             draw_img_pil = Image.fromarray(draw_img)
 
             detected_img = draw_img_pil.crop((top, left, top+width, left+height))
-            detected_img.resize((512,512))
+            # print("detected_img.shape : ", detected_img.shape)
+            detected_img = detected_img.resize((512,512))
             
             label = result["detection_classes"][0,i].astype(int)
             labels_to_num[label] += 1
@@ -181,7 +182,7 @@ def object_detection(model, inputData_list, dataset_path, output_path):
                     "ymax" : right
                 },
                 "tag" : str(tag),
-                "objectImagaPath" : filename,
+                "objectImagePath" : filename,
                 "IMG_URL":img_name
             }
 
