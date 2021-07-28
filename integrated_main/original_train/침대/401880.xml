@@ -1,0 +1,26 @@
+<annotation>
+	<folder>원목 침대</folder>
+	<filename>401880.png</filename>
+	<path>C:\Users\User\Desktop\문수 대학\컴퓨터종합설계1\침대 이미지 데이터\침대\원목 침대\401880.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>550</width>
+		<height>550</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>침대</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>211</ymin>
+			<xmax>524</xmax>
+			<ymax>459</ymax>
+		</bndbox>
+	</object>
+</annotation>

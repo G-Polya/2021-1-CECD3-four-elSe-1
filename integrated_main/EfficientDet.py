@@ -4,6 +4,7 @@ import tensorflow_hub as hub
 import cv2
 from PIL import Image
 import uuid
+from glob import glob
 import numpy as np
 
 #1부터 91까지의 COCO Class id 매핑
@@ -112,10 +113,12 @@ def object_detection(model, inputData_list, dataset_path, output_path):
     score_threshold = 0.4
     object_show_count = 100
     formatList = list()
+    
    
     
     for img_name in inputData_list:
-        imagePath = dataset_path + img_name
+        #imagePath = dataset_path + img_name
+        imagePath = dataset_path+img_name
         image = read_image_bgr(imagePath)
         
         draw = image.copy()

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>면러그-워싱카페트</folder>
+	<filename>383008.png</filename>
+	<path>C:\Users\User\Desktop\문수 대학\컴퓨터종합설계1\러그_중복제거\러그_중복제거\면러그-워싱카페트\383008.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>550</width>
+		<height>550</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>러그</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>163</ymin>
+			<xmax>550</xmax>
+			<ymax>550</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>원목 침대</folder>
+	<filename>475225.png</filename>
+	<path>F:\대학교 4학년 1학기\종설\LV0_침대+침실가구\침대이미지_중복제거\침대 이미지 데이터\침대\원목 침대\475225.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>550</width>
+		<height>550</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>침대</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>45</xmin>
+			<ymin>201</ymin>
+			<xmax>517</xmax>
+			<ymax>452</ymax>
+		</bndbox>
+	</object>
+</annotation>
