@@ -112,7 +112,7 @@ def object_detection(model, inputData_list, dataset_path, output_path):
     score_threshold = 0.4
     object_show_count = 100
     formatList = list()
-    draw_imgs = list()
+   
     
     for img_name in inputData_list:
         imagePath = dataset_path + img_name
@@ -150,17 +150,17 @@ def object_detection(model, inputData_list, dataset_path, output_path):
 
             ''' **** 주의 ******
             box는 ymin, xmin, ymax, xmax 순서로 되어 있음. '''
-            left = int(box[1] * width)
-            top = int(box[0] * height)
-            right = int(box[3] * width)
-            bottom = int(box[2] * height)
+            left = int(box[1] * width)    # xmin
+            top = int(box[0] * height)    # ymin
+            right = int(box[3] * width)   # xmax
+            bottom = int(box[2] * height) # ymax
        
             # detected_img = draw_img[left:right, top:bottom]
             # detected_img = Image.fromarray(detected_img)
             # detected_img = detected_img.resize((512,512))
             draw_img_pil = Image.fromarray(draw_img)
 
-            detected_img = draw_img_pil.crop((top, left, top+width, left+height))
+            detected_img = draw_img_pil.crop((left, top, right, bottom))
             # print("detected_img.shape : ", detected_img.shape)
             detected_img = detected_img.resize((256,256))
             
@@ -185,18 +185,9 @@ def object_detection(model, inputData_list, dataset_path, output_path):
                 "objectImagePath" : filename,
                 "IMG_URL":img_name
             }
-
-            caption = "{}: {:.4f}".format(tag, score)
-            print(caption)
-
-            cv2.rectangle(draw_img, (left, top), (right, bottom), color=green_color, thickness=2)
-            cv2.putText(draw_img, caption, (left, (top-5)), cv2.FONT_HERSHEY_SIMPLEX, 0.4, red_color,1)
-
-
             
             print('Detection 수행시간:',round(time.time() - start_time, 2),"초")
             
             formatList.append(format)
-            draw_imgs.append(draw_img)
             
-    return formatList, draw_imgs
+    return formatList

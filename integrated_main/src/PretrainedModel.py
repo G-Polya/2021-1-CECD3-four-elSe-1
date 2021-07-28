@@ -20,7 +20,7 @@ class PretrainedModel:
             self.model = tf.keras.applications.resnet_v2.ResNet50V2(weights="imagenet", include_top=False, input_shape=self.shape_img)
         elif self.modelName=="EfficientNet":
             print("Loading EfficientNet pre-trained model...")
-            self.model = tf.keras.applications.efficientnet.EfficientNetB7(weights="imagenet", include_top=False, input_shape=self.shape_img)
+            self.model = tf.keras.applications.efficientnet.EfficientNetB4(weights="imagenet", include_top=False, input_shape=self.shape_img)
             # self.model = tf.keras.applications.efficientnet.EfficientNetB7(weights="imagenet", include_top=False, input_shape=self.shape_img)
         
         self.model.summary()
