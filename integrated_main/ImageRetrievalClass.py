@@ -130,18 +130,18 @@ class ImageRetrievalClass:
         
         print("Inferencing embeddings using pre-trained model...")
         self.E_train = self.model.predict(X_train)
-        E_train_flatten = self.E_train.reshape((-1, np.prod(self.output_shape_model)))
+        # E_train_flatten = self.E_train.reshape((-1, np.prod(self.output_shape_model)))
         print(" -> E_train.shape = {}".format(self.E_train.shape))
-        print(" -> E_train_flatten.shape = {}".format(E_train_flatten.shape))
+        # print(" -> E_train_flatten.shape = {}".format(E_train_flatten.shape))
         return self.E_train
 
     def predictTest(self, X_test):
         
         print("Inferencing embeddings using pre-trained model...")
         self.E_test = self.model.predict(X_test)
-        E_test_flatten = self.E_test.reshape((-1, np.prod(self.output_shape_model)))
+        # E_test_flatten = self.E_test.reshape((-1, np.prod(self.output_shape_model)))
         print(" -> E_test.shape = {}".format(self.E_test.shape))
-        print(" -> E_test_flatten.shape = {}".format(E_test_flatten.shape))
+        # print(" -> E_test_flatten.shape = {}".format(E_test_flatten.shape))
         return self.E_test
     
     def similarityCalculator(self, E_train_flatten):

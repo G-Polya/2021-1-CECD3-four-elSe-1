@@ -162,7 +162,7 @@ def object_detection(model, inputData_list, dataset_path, output_path):
 
             detected_img = draw_img_pil.crop((top, left, top+width, left+height))
             # print("detected_img.shape : ", detected_img.shape)
-            detected_img = detected_img.resize((512,512))
+            detected_img = detected_img.resize((256,256))
             
             label = result["detection_classes"][0,i].astype(int)
             labels_to_num[label] += 1
