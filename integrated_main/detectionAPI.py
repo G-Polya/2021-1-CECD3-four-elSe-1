@@ -1,7 +1,7 @@
 
 
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,jsonify
 from flask_restful import Resource, Api
 import tensorflow_hub as hub
 
@@ -14,6 +14,7 @@ import os
 
 app = Flask(__name__)
 api = Api(app)
+
 
 
 class Detector(Resource):
@@ -51,8 +52,7 @@ class EfficientDet(Resource):
         dataset_list = os.listdir(dataset_path)
         detected_objectList = object_detection(model, dataset_list,dataset_path, output_path) # detection에 약 8초
        
-        return {"detected_objectList" : detected_objectList, "model":str(model)}
-
+        return jsonify({"detected_objectList" : detected_objectList, "model":str(model)})
 
 api.add_resource(EfficientDet, "/api/efficientDet")
 api.add_resource(Detector, "/")
