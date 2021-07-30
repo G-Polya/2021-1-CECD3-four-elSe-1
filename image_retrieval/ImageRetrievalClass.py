@@ -3,7 +3,7 @@ from multiprocessing import freeze_support
 import os
 import numpy as np
 import tensorflow as tf
-import keras
+#import keras
 from sklearn.neighbors import NearestNeighbors
 from src.CV_IO_utils import read_imgs_dir
 from src.CV_transform_utils import apply_transformer
@@ -14,7 +14,7 @@ from src.PretrainedModel import PretrainedModel
 from src.AbstractAE import AbstractAE
 from sklearn.decomposition import PCA
 
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 class ImageRetrievalClass:
     def __init__(self, modelName, trainModel, parallel):
@@ -56,7 +56,7 @@ class ImageRetrievalClass:
             self.input_shape_model = self.model.getInputshape()
             self.output_shape_model = self.model.getOutputshape()
         
-        elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet"]:
+        elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet","EfficientNet"]:
             pretrainedModel = PretrainedModel(self.modelName,self.shape_img)
             self.model = pretrainedModel.buildModel()
             self.shape_img_resize, self.input_shape_model, self.output_shape_model = pretrainedModel.makeInOut()

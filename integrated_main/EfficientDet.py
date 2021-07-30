@@ -109,10 +109,13 @@ def resize_image(img, min_side=800, max_side=1333):
 
     return img, scale
 
+<<<<<<< HEAD
 
 # test에 대해선, inputData_list, dataset_path, output_path가 아니라
 # 즉, 현재는 path 형식으로 이미지 경로를 가져와서 이미지를 로드하고 있는데
 # 웹에서 이미지를 입력받고 그걸 object_detection에 로드하는 방안을 강구해야함
+=======
+>>>>>>> f0c1a122e1b91dc5c7763d412c4b4553fe7882d6
 def object_detection(model, inputData_list, dataset_path, output_path):
     score_threshold = 0.4
     object_show_count = 100
@@ -134,6 +137,11 @@ def object_detection(model, inputData_list, dataset_path, output_path):
         draw_img = draw.copy()
         # draw_img = cv2.cvtColor(draw_img, cv2.COLOR_BGR2RGB)
 
+<<<<<<< HEAD
+=======
+        green_color = (0,255,0)
+        red_color = (0,0,255)
+>>>>>>> f0c1a122e1b91dc5c7763d412c4b4553fe7882d6
 
         img_tensor = tf.convert_to_tensor(draw, dtype=tf.uint8)[tf.newaxis, ...]
 

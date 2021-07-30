@@ -1,8 +1,8 @@
 
-import keras
-from keras.callbacks.callbacks import EarlyStopping
+#import keras
 from .utils import split
 import tensorflow as tf
+from tensorflow.keras.callbacks import EarlyStopping
 import numpy as np
 from .RetrievalModelFactory import RetrievalModelFactory
 from .AbstractRetrievalModel import AbstractRetrievalModel
@@ -12,7 +12,7 @@ W
  autoencoder.py  (author: Anson Wong / git: ankonzoid)
 
 """
-layers = keras.layers
+layers = tf.keras.layers
 
 class AutoencoderRetrievalModel(AbstractRetrievalModel):
 
@@ -71,10 +71,10 @@ class AutoencoderRetrievalModel(AbstractRetrievalModel):
     # Load model architecture and weights
     def load_models(self, loss="binary_crossentropy", optimizer="adam"):
         print("Loading models...")
-        self.autoencoder = keras.models.load_model(
+        self.autoencoder = tf.keras.models.load_model(
             self.info["autoencoderFile"])
-        self.encoder = keras.models.load_model(self.info["encoderFile"])
-        self.decoder = keras.models.load_model(self.info["decoderFile"])
+        self.encoder = tf.keras.models.load_model(self.info["encoderFile"])
+        self.decoder = tf.keras.models.load_model(self.info["decoderFile"])
         self.autoencoder.compile(optimizer=optimizer, loss=loss)
         self.encoder.compile(optimizer=optimizer, loss=loss)
         self.decoder.compile(optimizer=optimizer, loss=loss)
