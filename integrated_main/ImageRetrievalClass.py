@@ -3,7 +3,7 @@ from multiprocessing import freeze_support
 import os
 import numpy as np
 import tensorflow as tf
-import keras
+# import keras
 from sklearn.neighbors import NearestNeighbors
 from src.CV_IO_utils import read_imgs_dir, read_imgs_list, read_one_image
 from src.CV_transform_utils import apply_transformer
@@ -14,7 +14,7 @@ from src.PretrainedModel import PretrainedModel
 from src.AbstractAE import AbstractAE
 from sklearn.decomposition import PCA
 
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 class ImageTransformer(object):
     def __init__(self, shape_resize):
@@ -72,7 +72,7 @@ class ImageRetrievalClass:
             self.input_shape_model = self.model.getInputshape()
             self.output_shape_model = self.model.getOutputshape()
         
-        elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet"]:
+        elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet", "EfficientNet"]:
             pretrainedModel = PretrainedModel(self.modelName,self.shape_img)
             self.model = pretrainedModel.buildModel()
             self.shape_img_resize, self.input_shape_model, self.output_shape_model = pretrainedModel.makeInOut()
@@ -130,20 +130,27 @@ class ImageRetrievalClass:
         
         print("Inferencing embeddings using pre-trained model...")
         self.E_train = self.model.predict(X_train)
-        E_train_flatten = self.E_train.reshape((-1, np.prod(self.output_shape_model)))
+        # E_train_flatten = self.E_train.reshape((-1, np.prod(self.output_shape_model)))
         print(" -> E_train.shape = {}".format(self.E_train.shape))
-        print(" -> E_train_flatten.shape = {}".format(E_train_flatten.shape))
+        # print(" -> E_train_flatten.shape = {}".format(E_train_flatten.shape))
         return self.E_train
 
     def predictTest(self, X_test):
         
         print("Inferencing embeddings using pre-trained model...")
         self.E_test = self.model.predict(X_test)
-        E_test_flatten = self.E_test.reshape((-1, np.prod(self.output_shape_model)))
+        # E_test_flatten = self.E_test.reshape((-1, np.prod(self.output_shape_model)))
         print(" -> E_test.shape = {}".format(self.E_test.shape))
-        print(" -> E_test_flatten.shape = {}".format(E_test_flatten.shape))
+        # print(" -> E_test_flatten.shape = {}".format(E_test_flatten.shape))
         return self.E_test
     
+
+
+
+
+
+    # calculator와 retrieval 함수는 아예 클래스를 분리해도 될듯..?
+    # 왜나하면  
     def similarityCalculator(self, E_train_flatten):
         print("Fitting k-nearest-neighbour model on training images...")
         calculator = NearestNeighbors(n_neighbors=5, metric="cosine") # 팩토리와 AbstractCalculator 만들어서 OCP에 맞게 모듈화하기
