@@ -10,4 +10,6 @@
 *.json
 *.cfg
 *.weights
+/darknet
+/yolov3
 integrated_main/person5_path_ (.-original_train-person000031.png).json
