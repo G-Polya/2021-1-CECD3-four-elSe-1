@@ -28,7 +28,7 @@ from utils.torch_utils import select_device, load_classifier, time_sync
 
 
 @torch.no_grad()
-def object_detection(weights='yolov5/runs/train/exp2/weights/best.pt',  # model.pt path(s)
+def object_detection(weights='yolov5/runs/train/exp/weights/best.pt',  # model.pt path(s)
         source='yolov5/hanssem/images/val',  # file/dir/URL/glob, 0 for webcam
         imgsz=[640],  # inference size (pixels)
         conf_thres=0.1,  # confidence threshold
