@@ -8,13 +8,8 @@
 *.pkl
 *.npy
 *.json
-<<<<<<< HEAD
-/darknet
-*.cfg
-=======
 *.cfg
 *.weights
 /darknet
 /yolov3
->>>>>>> yolov5
 integrated_main/person5_path_ (.-original_train-person000031.png).json
