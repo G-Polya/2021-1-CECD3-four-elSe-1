@@ -716,9 +716,10 @@ def save_one_box(xyxy, im, file='image.jpg', gain=1.02, pad=10, square=False, BG
     crop = crop.resize((512,512))
     crop = np.array(crop)
     # print("after : ", type(crop))
+    path = increment_path(file, mkdir=True).with_suffix(".jpg")
     if save:
-        cv2.imwrite(str(increment_path(file, mkdir=True).with_suffix('.jpg')), crop)
-    return crop
+        cv2.imwrite(str(path), crop)
+    return crop, path
 
 
 def save_one_json(xyxy, im, tag, imagePath, gain=1.02, pad=10, square=False):
@@ -748,7 +749,7 @@ def save_one_json(xyxy, im, tag, imagePath, gain=1.02, pad=10, square=False):
             "ymax":ymax
         },
         "tag" : tag,
-        "objectImagePath":str(imagePath),
+        "objectImagePath": str(imagePath)
     }
 
     return format

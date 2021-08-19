@@ -209,8 +209,8 @@ def object_detection(weights='yolov5/runs/train/exp2/weights/best.pt',  # model.
                         if save_crop:
                             #save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
                             # print("names : ", names[c])
-                            save_one_box(xyxy, imc, file=save_dir / 'croppedImages' / f'{p.stem}_{names[c]}.jpg', BGR=True)
-                            format = save_one_json(xyxy,imc, tag=names[c], imagePath=save_dir/"croppedImages"/f"{p.stem}_{names[c]}.jpg")
+                            _, imagePath = save_one_box(xyxy, imc, file=save_dir / 'croppedImages' / f'{p.stem}_{names[c]}.jpg', BGR=True)
+                            format = save_one_json(xyxy,imc, tag=names[c], imagePath=imagePath)
                             formatList.append(format)
 
             # Print time (inference + NMS)
@@ -224,6 +224,7 @@ def object_detection(weights='yolov5/runs/train/exp2/weights/best.pt',  # model.
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
+                    
                     cv2.imwrite(save_path, im0)
                 else:  # 'video' or 'stream'
                     if vid_path[i] != save_path:  # new video
