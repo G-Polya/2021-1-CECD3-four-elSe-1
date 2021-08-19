@@ -1,5 +1,5 @@
 
-import keras
+from tensorflow import keras
 from .SimpleAE import SimpleAE
 from .StackedAE import StackedAE
 

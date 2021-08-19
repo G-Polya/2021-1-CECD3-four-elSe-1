@@ -699,7 +699,8 @@ def apply_classifier(x, model, img, im0):
 
     return x
 
-
+from PIL import Image
+import numpy as np
 def save_one_box(xyxy, im, file='image.jpg', gain=1.02, pad=10, square=False, BGR=False, save=True):
     # Save image crop as {file} with crop size multiple {gain} and {pad} pixels. Save and/or return crop
     xyxy = torch.tensor(xyxy).view(-1, 4)
@@ -710,6 +711,11 @@ def save_one_box(xyxy, im, file='image.jpg', gain=1.02, pad=10, square=False, BG
     xyxy = xywh2xyxy(b).long()
     clip_coords(xyxy, im.shape)
     crop = im[int(xyxy[0, 1]):int(xyxy[0, 3]), int(xyxy[0, 0]):int(xyxy[0, 2]), ::(1 if BGR else -1)]
+    # print("before : ", type(crop))
+    crop = Image.fromarray(crop)
+    crop = crop.resize((512,512))
+    crop = np.array(crop)
+    # print("after : ", type(crop))
     if save:
         cv2.imwrite(str(increment_path(file, mkdir=True).with_suffix('.jpg')), crop)
     return crop

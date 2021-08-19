@@ -28,7 +28,7 @@ from utils.torch_utils import select_device, load_classifier, time_sync
 
 
 @torch.no_grad()
-def run(weights='yolov5/runs/train/exp2/weights/best.pt',  # model.pt path(s)
+def object_detection(weights='yolov5/runs/train/exp2/weights/best.pt',  # model.pt path(s)
         source='yolov5/hanssem/images/val',  # file/dir/URL/glob, 0 for webcam
         imgsz=[640],  # inference size (pixels)
         conf_thres=0.1,  # confidence threshold
@@ -208,7 +208,7 @@ def run(weights='yolov5/runs/train/exp2/weights/best.pt',  # model.pt path(s)
                         im0 = plot_one_box(xyxy, im0, label=label, color=colors(c, True), line_width=line_thickness)
                         if save_crop:
                             #save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
-                            print("names : ", names[c])
+                            # print("names : ", names[c])
                             save_one_box(xyxy, imc, file=save_dir / 'croppedImages' / f'{p.stem}_{names[c]}.jpg', BGR=True)
                             format = save_one_json(xyxy,imc, tag=names[c], imagePath=save_dir/"croppedImages"/f"{p.stem}_{names[c]}.jpg")
                             formatList.append(format)
