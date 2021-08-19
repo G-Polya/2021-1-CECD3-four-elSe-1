@@ -28,8 +28,8 @@ from utils.torch_utils import select_device, load_classifier, time_sync
 
 
 @torch.no_grad()
-def run(weights='runs/train/exp2/weights/best.pt',  # model.pt path(s)
-        source='hanssem/images/val',  # file/dir/URL/glob, 0 for webcam
+def run(weights='yolov5/runs/train/exp2/weights/best.pt',  # model.pt path(s)
+        source='yolov5/hanssem/images/val',  # file/dir/URL/glob, 0 for webcam
         imgsz=[640],  # inference size (pixels)
         conf_thres=0.1,  # confidence threshold
         iou_thres=0.45,  # NMS IOU threshold
@@ -45,7 +45,7 @@ def run(weights='runs/train/exp2/weights/best.pt',  # model.pt path(s)
         augment=False,  # augmented inference
         visualize=False,  # visualize features
         update=False,  # update all models
-        project='runs/detect',  # save results to project/name
+        project='yolov5/runs/detect',  # save results to project/name
         name='exp',  # save results to project/name
         exist_ok=False,  # existing project/name ok, do not increment
         line_thickness=3,  # bounding box thickness (pixels)
