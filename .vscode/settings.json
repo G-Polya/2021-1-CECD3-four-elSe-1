@@ -1,9 +1,0 @@
-{
-<<<<<<< HEAD
-    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\envs\\tf1.14\\python.exe"
-=======
-    "jupyter.jupyterServerType": "local",
-    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\envs\\tf1.15\\python.exe",
-    "python.formatting.provider": "black"
->>>>>>> 5f56c8fd092821f079295fe26c0d2f32e120ee88
-}
