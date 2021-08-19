@@ -1,9 +1,10 @@
 
 
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,jsonify
 from flask_restful import Resource, Api
 import tensorflow_hub as hub
+from werkzeug.utils import secure_filename
 
 import tensorflow as tf
 
@@ -14,6 +15,20 @@ import os
 
 app = Flask(__name__)
 api = Api(app)
+
+@app.route("/upload")
+def render_file():
+    return render_template("upload.html")
+
+@app.route("/fileUpload", methods=["GET", "POST"])
+def upload_file():
+    if request.method =="POST":
+        f = request.files["file"]
+        filename = "./original_test/" + secure_filename(f.filename)
+        f.save(filename)
+        return "original_test 디렉터리 -> 파일 업로드 성공!"
+
+
 
 
 class Detector(Resource):
@@ -51,8 +66,7 @@ class EfficientDet(Resource):
         dataset_list = os.listdir(dataset_path)
         detected_objectList = object_detection(model, dataset_list,dataset_path, output_path) # detection에 약 8초
        
-        return {"detected_objectList" : detected_objectList, "model":str(model)}
-
+        return jsonify({"detected_objectList" : detected_objectList, "model":str(model)})
 
 api.add_resource(EfficientDet, "/api/efficientDet")
 api.add_resource(Detector, "/")
