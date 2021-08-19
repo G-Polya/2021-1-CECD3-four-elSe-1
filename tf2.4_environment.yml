@@ -1,4 +1,0 @@
-name: tf2.4_0
-channels:
-  - defaults
-prefix: /home/plass-heesu/anaconda3/envs/tf2.4_0
