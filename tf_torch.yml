@@ -1,4 +1,4 @@
-name: tf2.4
+name: tf2.5
 channels:
   - conda-forge
   - defaults
@@ -44,6 +44,7 @@ dependencies:
   - dbus=1.13.18=hb2f20db_0
   - decorator=5.0.9=pyhd3eb1b0_0
   - defusedxml=0.7.1=pyhd3eb1b0_0
+  - easydict=1.9=py_0
   - entrypoints=0.3=py37_0
   - expat=2.4.1=h2531618_2
   - flask=1.1.2=pyhd3eb1b0_0
@@ -51,13 +52,11 @@ dependencies:
   - fontconfig=2.13.1=h6c09931_0
   - freetype=2.10.4=h5ab3b9f_0
   - fsspec=2021.7.0=pyhd3eb1b0_0
-  - gast=0.4.0=py_0
   - giflib=5.1.4=h14c3975_1
   - glib=2.69.0=h5202010_0
   - google-auth=1.21.3=py_0
   - google-auth-oauthlib=0.4.4=pyhd3eb1b0_0
   - google-pasta=0.2.0=py_0
-  - grpcio=1.36.1=py37h2157cd5_1
   - gst-plugins-base=1.14.0=h8213a91_2
   - gstreamer=1.14.0=h28cd5cc_2
   - h5py=2.10.0=py37hd6299e0_1
@@ -94,6 +93,8 @@ dependencies:
   - ld_impl_linux-64=2.35.1=h7274673_9
   - lerc=2.2.1=h2531618_0
   - libaec=1.0.4=he6710b0_1
+  - libblas=3.9.0=11_linux64_mkl
+  - libcblas=3.9.0=11_linux64_mkl
   - libcurl=7.71.1=h303737a_2
   - libdeflate=1.7=h27cfd23_5
   - libedit=3.1.20210216=h27cfd23_1
@@ -102,6 +103,7 @@ dependencies:
   - libgfortran-ng=7.5.0=ha8ba4b0_17
   - libgfortran4=7.5.0=ha8ba4b0_17
   - libgomp=9.3.0=h5101ec6_17
+  - liblapack=3.9.0=11_linux64_mkl
   - libpng=1.6.37=hbc83047_0
   - libprotobuf=3.17.2=h4ff587b_1
   - libsodium=1.0.18=h7b6447c_0
@@ -121,6 +123,8 @@ dependencies:
   - mistune=0.8.4=py37h14c3975_1001
   - mkl=2021.3.0=h06a4308_520
   - mkl-service=2.4.0=py37h7f8727e_0
+  - mkl_fft=1.3.0=py37h42c9631_2
+  - mkl_random=1.2.2=py37h51133e4_0
   - nbclient=0.5.3=pyhd3eb1b0_0
   - nbconvert=6.1.0=py37h06a4308_0
   - nbformat=5.1.3=pyhd3eb1b0_0
@@ -128,6 +132,7 @@ dependencies:
   - nest-asyncio=1.5.1=pyhd3eb1b0_0
   - networkx=2.5=py_0
   - notebook=6.4.0=py37h06a4308_0
+  - numpy-base=1.20.3=py37h74d4b33_0
   - oauthlib=3.1.1=pyhd3eb1b0_0
   - olefile=0.46=py37_0
   - openjpeg=2.3.0=h05c96fa_1
@@ -178,14 +183,13 @@ dependencies:
   - send2trash=1.5.0=pyhd3eb1b0_1
   - setuptools=52.0.0=py37h06a4308_0
   - sip=4.19.8=py37hf484d3e_0
-  - six=1.16.0=pyhd3eb1b0_0
+  - six=1.15.0=py37h06a4308_0
   - snappy=1.1.8=he6710b0_0
   - sqlite=3.36.0=hc218d9a_0
-  - tensorboard=2.4.0=pyhc547734_0
   - tensorboard-plugin-wit=1.6.0=py_0
   - tensorflow=2.4.1=gpu_py37ha2e99fa_0
   - tensorflow-base=2.4.1=gpu_py37h29c2da4_0
-  - tensorflow-estimator=2.5.0=pyh7b7c402_0
+  - tensorflow-estimator=2.4.1=pyheb71bc4_0
   - tensorflow-gpu=2.4.1=h30adc30_0
   - termcolor=1.1.0=py37h06a4308_1
   - terminado=0.9.4=py37h06a4308_0
@@ -196,7 +200,6 @@ dependencies:
   - toolz=0.11.1=pyhd3eb1b0_0
   - tornado=6.1=py37h27cfd23_0
   - traitlets=5.0.5=pyhd3eb1b0_0
-  - typing-extensions=3.10.0.0=hd3eb1b0_0
   - typing_extensions=3.10.0.0=pyh06a4308_0
   - urllib3=1.26.6=pyhd3eb1b0_1
   - wcwidth=0.2.5=py_0
@@ -217,13 +220,26 @@ dependencies:
     - blessings==1.7
     - colorama==0.4.4
     - flatbuffers==1.12
+    - gast==0.3.3
     - gpustat==0.6.0
+    - grpcio==1.32.0
     - jpype1==1.3.0
     - konlpy==0.5.2
     - lxml==4.6.3
-    - numpy==1.19.5
+    - numpy==1.19.2
     - nvidia-ml-py3==7.352.0
+    - opencv-contrib-python==4.5.3.56
+    - opencv-python==4.5.3.56
+    - pandas==1.3.1
     - psutil==5.8.0
+    - seaborn==0.11.1
+    - tensorboard==2.6.0
+    - tensorboard-data-server==0.6.1
     - tensorflow-hub==0.12.0
+    - thop==0.0.31-2005241907
+    - torch==1.9.0
+    - torchvision==0.10.0
+    - tqdm==4.62.0
     - tweepy==3.10.0
-prefix: /home/plass-heesu/anaconda3/envs/tf2.4
+    - typing-extensions==3.7.4
+prefix: /home/plass-heesu/.conda/envs/tf2.5

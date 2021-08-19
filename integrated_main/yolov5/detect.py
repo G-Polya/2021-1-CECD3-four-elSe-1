@@ -53,6 +53,8 @@ def object_detection(weights='yolov5/runs/train/exp/weights/best.pt',  # model.p
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         tfl_int8=False,  # INT8 quantized TFLite model
+        model=None,
+        modelc=None
         ):
 
     imgsz *= 2 if len(imgsz) == 1 else 1  # expand
