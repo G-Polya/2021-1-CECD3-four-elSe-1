@@ -9,4 +9,7 @@
 # inference and retrieval
 - inference.ipynb에서 실행
 
-# 
+# API test 방법
+ 1. terminal에서 python detectionAPI.py 
+ 2. 웹페이지에서 http://127.0.0.1:5000/ 접속
+ 3. 접속후 apiTest.ipynb 순차실행
