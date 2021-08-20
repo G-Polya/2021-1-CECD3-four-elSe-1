@@ -27,7 +27,7 @@ class Retrieval(Resource):
    
     def get(self):
         selectObject = Select.getSelectObject()
-        print("selectObject : ", selectObject)
+        
         selectObject_path = selectObject["objectImagePath"]
         selectObject_pil = Image.open(selectObject_path)
         retrievalInstance = ImageRetrievalClass("IncepResNet", True, False)

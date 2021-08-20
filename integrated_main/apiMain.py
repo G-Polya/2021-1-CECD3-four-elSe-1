@@ -21,7 +21,7 @@ def upload_file():
 
         filename = "./yolov5/hanssem/images/query/" + secure_filename(f.filename)
         f.save(filename)
-        return "original_test 디렉터리 -> 파일 업로드 성공!"
+        return "/yolov5/hanssem/images/query/ 디렉터리 -> 파일 업로드 성공!"
 
 
 api.add_resource(ModelLoader,"/")
