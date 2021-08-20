@@ -34,7 +34,7 @@ def object_detection(weights='yolov5/runs/train/exp/weights/best.pt',  # model.p
         conf_thres=0.1,  # confidence threshold
         iou_thres=0.45,  # NMS IOU threshold
         max_det=1000,  # maximum detections per image
-        device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+        device=None,  # cuda device, i.e. 0 or 0,1,2,3 or cpu
         view_img=False,  # show results
         save_txt=False,  # save results to *.txt
         save_conf=False,  # save confidences in --save-txt labels
@@ -68,7 +68,7 @@ def object_detection(weights='yolov5/runs/train/exp/weights/best.pt',  # model.p
 
     # Initialize
     set_logging()
-    device = select_device(device)
+    # device = select_device(device)
     half &= device.type != 'cpu'  # half precision only supported on CUDA
 
     # Load model

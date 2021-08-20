@@ -1,17 +1,17 @@
 
 
 
+from yolov5.utils.torch_utils import select_device
 from flask import Flask, render_template, request,jsonify
 from flask_restful import Resource, Api
-import tensorflow_hub as hub
-from werkzeug.utils import secure_filename
 
-import tensorflow as tf
+from werkzeug.utils import secure_filename
 
 from yolov5 import detect
 import os
 
-
+from yolov5.utils.torch_utils import select_device, load_classifier, time_sync
+from yolov5.models.experimental import attempt_load
 
 app = Flask(__name__)
 api = Api(app)
@@ -33,9 +33,11 @@ def upload_file():
 
 
 
-
+@app.route("/api")
 class Detector(Resource):
-    detector = None
+    model = None
+    modelc = None
+    device = None
     
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_instance"):
@@ -43,51 +45,50 @@ class Detector(Resource):
             cls._instance = super(Detector,cls).__new__(cls)
         return cls._instance
 
-    def __init__(cls,module_handle="https://tfhub.dev/tensorflow/efficientdet/d0/1"):
-        if cls.detector != None:
+    def __init__(cls):
+        if cls.model != None or cls.modelc != None:
             print("Already exist")
         else:
-            cls.detector =  hub.load(module_handle)
+            cls.device = select_device('0')
+            weights='yolov5/runs/train/exp/weights/best.pt'
+            cls.model = attempt_load(weights, map_location=cls.device)  
+            cls.modelc = load_classifier(name="resnet50", n=2)
 
     def get(self):
         pass
 
-    def getDetector(cls):
-        return cls.detector
+    def getSelf(self):
+        return self
+
+    def getModel(cls):
+        return cls.model
+    
+    def getModelc(cls):
+        return cls.modelc
+
+    def getDevice(cls):
+        return cls.device
 
 
-
-@app.route("/api")
-class EfficientDet(Resource):
+# @app.route("/api/detection")
+class detection(Resource):
 
     def get(self):
-        model =  Detector().getDetector()
+        detector = Detector()
+        device = detector.getDevice()
+        model =  detector.getModel()
+        modelc = detector.getModelc()
         
-        # dataset_path = "./original_train_person/"
-        dataset_path = "./original_test/"
-        output_path = "./detected_data/detected_from_test/"
-        dataset_list = os.listdir(dataset_path)
-        detected_objectList = object_detection(model, dataset_list,dataset_path, output_path) # detection에 약 8초
-       
-        return jsonify({"detected_objectList" : detected_objectList, "model":str(model)})
+        detectedObject_list = detect.object_detection(imgsz=[576],name="query",
+                                                      source="yolov5/hanssem/images/query",
+                                                      device=device, model=model, modelc=modelc)
 
-api.add_resource(EfficientDet, "/api/efficientDet")
+        return jsonify({"detected_objectList" : detectedObject_list})
+
+api.add_resource(detection, "/api/detection")
 api.add_resource(Detector, "/")
 
 
 if __name__ =="__main__":
-    gpus = tf.config.experimental.list_physical_devices('GPU')
-    if gpus:
-        # Restrict TensorFlow to only allocate 1GB of memory on the first GPU
-        try:
-            tf.config.experimental.set_virtual_device_configuration(
-                gpus[0],
-                [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=1024 * 10)])
-
-            logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
-        except RuntimeError as e:
-            # Virtual devices must be set before GPUs have been initialized
-            print(e)
     app.run()
     
