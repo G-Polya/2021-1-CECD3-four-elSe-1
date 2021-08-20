@@ -34,7 +34,7 @@ def object_detection(weights='yolov5/runs/train/exp/weights/best.pt',  # model.p
         conf_thres=0.1,  # confidence threshold
         iou_thres=0.45,  # NMS IOU threshold
         max_det=1000,  # maximum detections per image
-        device='0,1,2,3',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
+        device='0',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
         view_img=False,  # show results
         save_txt=False,  # save results to *.txt
         save_conf=False,  # save confidences in --save-txt labels
@@ -77,13 +77,14 @@ def object_detection(weights='yolov5/runs/train/exp/weights/best.pt',  # model.p
     pt, onnx, tflite, pb, saved_model = (suffix == x for x in ['.pt', '.onnx', '.tflite', '.pb', ''])  # backend
     stride, names = 64, [f'class{i}' for i in range(1000)]  # assign defaults
     if pt:
-        model = attempt_load(weights, map_location=device)  # load FP32 model
+        #model = attempt_load(weights, map_location=device)  # load FP32 model
+        
         stride = int(model.stride.max())  # model stride
         names = model.module.names if hasattr(model, 'module') else model.names  # get class names
         if half:
             model.half()  # to FP16
         if classify:  # second-stage classifier
-            modelc = load_classifier(name='resnet50', n=2)  # initialize
+            # modelc = load_classifier(name='resnet50', n=2)  # initialize
             modelc.load_state_dict(torch.load('resnet50.pt', map_location=device)['model']).to(device).eval()
     elif onnx:
         check_requirements(('onnx', 'onnxruntime'))
