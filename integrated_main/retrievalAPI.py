@@ -5,6 +5,8 @@ from glob import glob
 from PIL import Image
 import numpy as np
 import json
+import time 
+
 class Select(Resource):
     def get(self):
         pass
@@ -26,6 +28,7 @@ from ImageRetrievalClass import ImageRetrievalClass
 class Retrieval(Resource):
    
     def get(self):
+        before = time.time()
         selectObject = Select.getSelectObject()
         
         selectObject_path = selectObject["objectImagePath"]
@@ -51,7 +54,10 @@ class Retrieval(Resource):
         calculator = retrievalInstance.similarityCalculator(E_train_flatten)
         retrieval_imagePool = [Image.open(json["objectImagePath"]) for json in query.getQueryed_jsonList()]
         retrievalInstance.retrieval(E_test_flatten,calculator,retrieval_imagePool)
+        after = time.time()
+        elapsed_time = after - before 
         print("Retrieval completed")
+        return "Retrieval completed! " + str(round(elapsed_time, 2)) +"s"
 
         
 

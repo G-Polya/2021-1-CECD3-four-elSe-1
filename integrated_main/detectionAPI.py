@@ -7,11 +7,13 @@ from yolov5.utils.torch_utils import select_device
 from yolov5 import detect
 from yolov5.utils.torch_utils import select_device, load_classifier, time_sync
 from yolov5.models.experimental import attempt_load
+import time
 
 class ModelLoader(Resource):
     model = None
     modelc = None
     device = None
+    elapsed_time = None
     
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_instance"):
@@ -23,13 +25,21 @@ class ModelLoader(Resource):
         if cls.model != None or cls.modelc != None:
             print("Already exist")
         else:
+            before = time.time()
             cls.device = select_device('0')
             weights='yolov5/runs/train/exp/weights/best.pt'
             cls.model = attempt_load(weights, map_location=cls.device)  
             cls.modelc = load_classifier(name="resnet50", n=2)
+            after = time.time()
+            cls.elapsed_time = after - before
 
     def get(self):
-        pass
+        print("Model Loaded! " + str(round(self.getElapsed(), 2))+"s")
+        return "Model Loaded! " + str(round(self.getElapsed(), 2))+"s"
+
+    def getElapsed(cls):
+        
+        return cls.elapsed_time
 
     def getSelf(self):
         return self
