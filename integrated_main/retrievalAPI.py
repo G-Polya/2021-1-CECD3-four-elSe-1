@@ -52,12 +52,22 @@ class Retrieval(Resource):
 
 
         calculator = retrievalInstance.similarityCalculator(E_train_flatten)
-        retrieval_imagePool = [Image.open(json["objectImagePath"]) for json in query.getQueryed_jsonList()]
-        retrievalInstance.retrieval(E_test_flatten,calculator,retrieval_imagePool)
+        queryed_jsonList = query.getQueryed_jsonList()
+        retrieval_imagePool = [Image.open(json["objectImagePath"]) for json in queryed_jsonList]
+        retrieval_indices = retrievalInstance.retrieval(E_test_flatten,calculator,retrieval_imagePool)
+        
+        similar_json=[]
+        similar_json_url=[]
+        for i in range(5):
+            temp=retrieval_indices[0][i]
+            # print(temp)
+            similar_json.append(queryed_jsonList[temp])
+            similar_json_url.append(queryed_jsonList[temp]['IMG_URL'])
+        
         after = time.time()
         elapsed_time = after - before 
-        print("Retrieval completed")
-        return "Retrieval completed! " + str(round(elapsed_time, 2)) +"s"
+        print("Retrieval completed! " + str(round(elapsed_time, 2)) +"s")
+        return similar_json
 
         
 

@@ -64,7 +64,8 @@ class Detection(Resource):
         
         detectedObject_list = detect.object_detection(imgsz=[576],name="query",
                                                       source="yolov5/hanssem/images/query",
-                                                      device=device, model=model, modelc=modelc)
+                                                      device=device, model=model, modelc=modelc,
+                                                      iou_thres=0.1)
 
         return jsonify({"detected_objectList" : detectedObject_list})
 
