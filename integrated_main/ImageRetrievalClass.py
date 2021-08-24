@@ -172,6 +172,8 @@ class ImageRetrievalClass:
 
             img_query = self.imgs_test[i]  # query image
             imgs_retrieval = [imgs_train[idx] for idx in indices.flatten()]  # retrieval images
-                            
+
             outFile = os.path.join(self.outDir, "{}_retrieval_{}.png".format(self.modelName, i))
             plot_query_retrieval(img_query, imgs_retrieval, outFile)
+
+            return indices
