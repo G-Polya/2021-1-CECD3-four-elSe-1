@@ -23,7 +23,7 @@ class PretrainedModel:
             self.model = tf.keras.applications.efficientnet.EfficientNetB4(weights="imagenet", include_top=False, input_shape=self.shape_img)
             # self.model = tf.keras.applications.efficientnet.EfficientNetB7(weights="imagenet", include_top=False, input_shape=self.shape_img)
         
-        self.model.summary()
+        # self.model.summary()
         
         return self.model
 

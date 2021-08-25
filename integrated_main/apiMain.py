@@ -31,18 +31,17 @@ def upload_file():
 
 class Delete(Resource):
     def get(self):
-        os.chdir("./yolov5/hanssem/images/query/")
         print("current directory : ",os.getcwd())
-        os.system("rm *.jpg")
+      
+        os.system("rm ./yolov5/hanssem/images/query/*")
+        os.system("rm ./yolov5/runs/detect/ -rf")
+        os.system("rm ./static/img/*")
 
-        os.chdir("../../../runs")
         print("current directory : ",os.getcwd())
-        os.system("rm -rf detect/")
-
-        os.chdir("../../../")
-        print("current directory : ",os.getcwd())
-        
+    
         print("delete completed")
+
+    
         return "delete completed"
 
 
@@ -97,12 +96,28 @@ def retrieval(idx):
     }
     return output       
 
-@app.route("/api/retrieval/<int:idx>/show", methods=["GET","POST"])
-def show(idx):
-    print(idx)
+@app.route("/api/retrieval/<int:idx>/showImage", methods=["GET","POST"])
+def showImage(idx):
     output = retrieval(idx)
-    # print(output)
-    return render_template("show.html", output=output)
+    selectedObject_imagePath = output["selectedObject"]["objectImagePath"]
+    print("befroe : ", selectedObject_imagePath)
+    os.system(f"cp ./{selectedObject_imagePath} ./static/img")
+
+    selectedObject_imagePath = selectedObject_imagePath.split("/")[-1]
+    imgURL_list = list()
+    for retrieval_output in output["retrieval_output"]:
+         print(retrieval_output["IMG_URL"])
+         imgURL_list.append(retrieval_output["IMG_URL"])
+
+    return render_template("show.html", img_file="img/"+selectedObject_imagePath, urlList=imgURL_list)
+
+
+
+@app.route("/api/retrieval/<int:idx>/showJSON", methods=["GET","POST"])
+def showJSON(idx):
+    output = retrieval(idx)
+    selectedObject_image = output["selectedObject"]["objectImagePath"]
+    return output
     
 
 
