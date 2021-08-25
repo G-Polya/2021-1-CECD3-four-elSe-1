@@ -100,23 +100,20 @@ def retrieval(idx):
 def showImage(idx):
     output = retrieval(idx)
     selectedObject_imagePath = output["selectedObject"]["objectImagePath"]
-    print("befroe : ", selectedObject_imagePath)
     os.system(f"cp ./{selectedObject_imagePath} ./static/img")
 
     selectedObject_imagePath = selectedObject_imagePath.split("/")[-1]
     imgURL_list = list()
     for retrieval_output in output["retrieval_output"]:
-         print(retrieval_output["IMG_URL"])
          imgURL_list.append(retrieval_output["IMG_URL"])
 
     return render_template("show.html", img_file="img/"+selectedObject_imagePath, urlList=imgURL_list)
 
 
 
-@app.route("/api/retrieval/<int:idx>/showJSON", methods=["GET","POST"])
+@app.route("/api/retrieval/<int:idx>/getJSON", methods=["GET","POST"])
 def showJSON(idx):
     output = retrieval(idx)
-    selectedObject_image = output["selectedObject"]["objectImagePath"]
     return output
     
 
