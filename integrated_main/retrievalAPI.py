@@ -24,57 +24,6 @@ class Select(Resource):
         except IndexError as e:
             return e
 
-from ImageRetrievalClass import ImageRetrievalClass   
-class Retrieval(Resource):
-   
-    def get(self):
-        before = time.time()
-        idx = int(request.args["idx"])
-        selectObject = Select.getSelectObject(idx)
-        
-        selectObject_path = selectObject["objectImagePath"]
-        selectObject_pil = Image.open(selectObject_path)
-        retrievalInstance = ImageRetrievalClass("IncepResNet", True, False)
-        retrievalInstance.readTestSet(selectObject_pil)
-        retrievalInstance.buildModel()
-
-        X_test = retrievalInstance.testTransform()
-
-        E_test = retrievalInstance.predictTest(X_test)
-        E_test_flatten = E_test.reshape((-1, np.prod(retrievalInstance.output_shape_model)))
-        tag = selectObject["tag"]
-        print("tag : ", tag)
-        
-        query = Query(tag)
-        E_train = query.get_E_train()
-        print("E_train.shape : ", E_train.shape)
-        E_train_flatten = E_train.reshape((-1, np.prod(retrievalInstance.output_shape_model)))
-        print("E_train_flatten.shape : ", E_train_flatten.shape)
-
-
-        calculator = retrievalInstance.similarityCalculator(E_train_flatten)
-        queryed_jsonList = query.getQueryed_jsonList()
-        retrieval_imagePool = [Image.open(json["objectImagePath"]) for json in queryed_jsonList]
-        retrieval_indices = retrievalInstance.retrieval(E_test_flatten,calculator,retrieval_imagePool)
-        
-        similar_json=[]
-        similar_json_url=[]
-        for i in range(5):
-            temp=retrieval_indices[0][i]
-            # print(temp)
-            similar_json.append(queryed_jsonList[temp])
-            similar_json_url.append(queryed_jsonList[temp]['IMG_URL'])
-        
-        after = time.time()
-        elapsed_time = after - before 
-        print("Retrieval completed! " + str(round(elapsed_time, 2)) +"s")
-        output = {
-            "selectedObject": selectObject,
-            "retrieval_output":similar_json
-        }
-        return jsonify(output)
-
-        
 
 
 
