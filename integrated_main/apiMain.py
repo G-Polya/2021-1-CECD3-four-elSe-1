@@ -25,6 +25,7 @@ def upload_file():
         filename = "./yolov5/hanssem/images/query/" + secure_filename(f.filename)
         f.save(filename)
         return "/yolov5/hanssem/images/query/ 디렉터리 -> 파일 업로드 성공!"
+
 class Delete(Resource):
     def get(self):
         os.chdir("./yolov5/hanssem/images/query/")
@@ -50,4 +51,4 @@ api.add_resource(Retrieval, "/api/retrieval")
 api.add_resource(Delete,"/delete")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5050, debug=True)

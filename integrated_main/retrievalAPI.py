@@ -1,6 +1,6 @@
 from flask_restful import Resource, Api
 import requests
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from glob import glob 
 from PIL import Image
 import numpy as np
@@ -12,9 +12,9 @@ class Select(Resource):
         pass
     
     @staticmethod
-    def getSelectObject():
-        idx = int(request.args["idx"])
-        url = "http://127.0.0.1:5000/api/detection"
+    def getSelectObject(idx):
+        # idx = int(request.args["idx"])
+        url = "http://127.0.0.1:5050/api/detection"
         response = requests.get(url)
         detected_objectList = response.json()["detected_objectList"]
         selectObject = None
@@ -29,7 +29,8 @@ class Retrieval(Resource):
    
     def get(self):
         before = time.time()
-        selectObject = Select.getSelectObject()
+        idx = int(request.args["idx"])
+        selectObject = Select.getSelectObject(idx)
         
         selectObject_path = selectObject["objectImagePath"]
         selectObject_pil = Image.open(selectObject_path)
@@ -67,7 +68,11 @@ class Retrieval(Resource):
         after = time.time()
         elapsed_time = after - before 
         print("Retrieval completed! " + str(round(elapsed_time, 2)) +"s")
-        return similar_json
+        output = {
+            "selectedObject": selectObject,
+            "retrieval_output":similar_json
+        }
+        return jsonify(output)
 
         
 
