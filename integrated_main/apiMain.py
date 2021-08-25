@@ -1,8 +1,11 @@
 from flask_restful import Resource, Api
 from detectionAPI import ModelLoader, Detection
-from retrievalAPI import Select, Query
 from flask import Flask, render_template, request,jsonify
+import time
 
+from retrievalAPI import Select, Query
+from PIL import Image
+import numpy as np
 
 from werkzeug.utils import secure_filename
 import os
@@ -46,10 +49,12 @@ class Delete(Resource):
  
 from ImageRetrievalClass import ImageRetrievalClass 
 
-@app.route("/api/retrieval/<idx>")
+@app.route("/api/retrieval/<int:idx>")
 def retrieval(idx):
     before = time.time()
-    idx = int(request.args["idx"])
+    print("idx :", idx)
+    print("type(idx) : ", type(idx))
+    # idx = int(request.args["idx"])
     selectObject = Select.getSelectObject(idx)
     
     selectObject_path = selectObject["objectImagePath"]
