@@ -49,11 +49,9 @@ class Delete(Resource):
  
 from ImageRetrievalClass import ImageRetrievalClass 
 
-@app.route("/api/retrieval/<int:idx>")
 def retrieval(idx):
     before = time.time()
-    print("idx :", idx)
-    print("type(idx) : ", type(idx))
+
     # idx = int(request.args["idx"])
     selectObject = Select.getSelectObject(idx)
     
@@ -97,7 +95,15 @@ def retrieval(idx):
         "selectedObject": selectObject,
         "retrieval_output":similar_json
     }
-    return jsonify(output)       
+    return output       
+
+@app.route("/api/retrieval/<int:idx>/show", methods=["GET","POST"])
+def show(idx):
+    print(idx)
+    output = retrieval(idx)
+    # print(output)
+    return render_template("show.html", output=output)
+    
 
 
 api.add_resource(ModelLoader,"/")
