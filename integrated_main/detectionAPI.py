@@ -9,55 +9,53 @@ from yolov5.utils.torch_utils import select_device, load_classifier, time_sync
 from yolov5.models.experimental import attempt_load
 import time
 
-class ModelLoader(Resource):
-    model = None
-    modelc = None
-    device = None
-    elapsed_time = None
-    
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, "_instance"):
-            # print("__new__ is called")
-            cls._instance = super(ModelLoader,cls).__new__(cls)
-        return cls._instance
 
-    def __init__(cls):
-        if cls.model != None or cls.modelc != None:
-            print("Already exist")
+class ModelLoader(Resource):
+    _instance = None
+    def __init__(self):
+        if not ModelLoader._instance:
+            print("ModelLoader.__init__ method called but nothing is created")
         else:
-            before = time.time()
-            cls.device = select_device('0')
-            weights='yolov5/runs/train/exp/weights/best.pt'
-            cls.model = attempt_load(weights, map_location=cls.device)  
-            cls.modelc = load_classifier(name="resnet50", n=2)
-            after = time.time()
-            cls.elapsed_time = after - before
+            print("ModelLoader instance already created", self.getInstance())
+
+        before = time.time()
+        self.__device = select_device('0')
+        weights='yolov5/runs/train/exp/weights/best.pt'
+        self.__model =attempt_load(weights, map_location=self.__device) 
+        self.__modelc = load_classifier(name="resnet50", n=2)
+        after = time.time()
+        self.__elapsed_time = after-before
+
+    def getModel(self):
+        return self.__model
+
+    def getModelc(self):
+        return self.__modelc
+
+    def getDevice(self):
+        return self.__device
+
+    def getElapsed(self):
+        return self.__elapsed_time    
 
     def get(self):
+        # print(self.getInstance())
         print("Model Loaded! " + str(round(self.getElapsed(), 2))+"s")
         return "Model Loaded! " + str(round(self.getElapsed(), 2))+"s"
 
-    def getElapsed(cls):
+    @classmethod
+    def getInstance(cls):
+        if not cls._instance:
+            cls._instance = ModelLoader()
         
-        return cls.elapsed_time
+        return cls._instance
 
-    def getSelf(self):
-        return self
-
-    def getModel(cls):
-        return cls.model
     
-    def getModelc(cls): 
-        return cls.modelc
-
-    def getDevice(cls):
-        return cls.device
-
 
 class Detection(Resource):
 
     def get(self):
-        modelLoader = ModelLoader()
+        modelLoader = ModelLoader.getInstance()
         device = modelLoader.getDevice()
         model =  modelLoader.getModel()
         modelc = modelLoader.getModelc()

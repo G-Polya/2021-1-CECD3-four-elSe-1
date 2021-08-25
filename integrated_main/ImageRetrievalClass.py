@@ -151,9 +151,9 @@ class ImageRetrievalClass:
 
     # calculator와 retrieval 함수는 아예 클래스를 분리해도 될듯..?
     # 왜나하면  
-    def similarityCalculator(self, E_train_flatten):
+    def similarityCalculator(self, E_train_flatten, n_neighbors=5):
         print("Fitting k-nearest-neighbour model on training images...")
-        calculator = NearestNeighbors(n_neighbors=5, metric="cosine") # 팩토리와 AbstractCalculator 만들어서 OCP에 맞게 모듈화하기
+        calculator = NearestNeighbors(n_neighbors=n_neighbors, metric="cosine") # 팩토리와 AbstractCalculator 만들어서 OCP에 맞게 모듈화하기
         calculator.fit(E_train_flatten)
 
         return calculator

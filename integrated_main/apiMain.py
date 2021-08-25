@@ -74,14 +74,14 @@ def retrieval(idx):
     print("E_train_flatten.shape : ", E_train_flatten.shape)
 
 
-    calculator = retrievalInstance.similarityCalculator(E_train_flatten)
+    calculator = retrievalInstance.similarityCalculator(E_train_flatten, n_neighbors=10)
     queryed_jsonList = query.getQueryed_jsonList()
     retrieval_imagePool = [Image.open(json["objectImagePath"]) for json in queryed_jsonList]
     retrieval_indices = retrievalInstance.retrieval(E_test_flatten,calculator,retrieval_imagePool)
     
     similar_json=[]
     similar_json_url=[]
-    for i in range(5):
+    for i in range(len(retrieval_indices[0])):
         temp=retrieval_indices[0][i]
         # print(temp)
         similar_json.append(queryed_jsonList[temp])
