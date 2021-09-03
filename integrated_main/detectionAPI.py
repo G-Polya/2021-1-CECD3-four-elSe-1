@@ -19,8 +19,9 @@ class ModelLoader(Resource):
             print("ModelLoader instance already created", self.getInstance())
 
         before = time.time()
-        self.__device = select_device('0')
-        weights='yolov5/runs/train/exp/weights/best.pt'
+        self.__device = select_device('1')
+        # weights='yolov5/runs/train/exp/weights/best.pt'
+        weights = 'yolov5/runs/train/exp/weights/best.pt'
         self.__model =attempt_load(weights, map_location=self.__device) 
         self.__modelc = load_classifier(name="resnet50", n=2)
         after = time.time()

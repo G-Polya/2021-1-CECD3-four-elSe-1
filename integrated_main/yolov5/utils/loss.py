@@ -221,3 +221,19 @@ class ComputeLoss:
             tcls.append(c)  # class
 
         return tcls, tbox, indices, anch
+
+
+#add contrative loss
+class ContrastiveLoss(nn.Module):
+    """
+    Contrastive loss function.
+    Based on : http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+    """
+
+    def __init__(self, margin=2.0):
+        super(ContrastiveLoss, self).__init__()
+        self.margin=margin
+#dist, label
+    def forward(self, pred, true):
+        loss = torch.mean(1/2*(true) * torch.pow(pred, 2) + 1/2*(1-true) * torch.pow(torch.clamp(self.margin - pred, min=0.0), 2))
+        return loss
