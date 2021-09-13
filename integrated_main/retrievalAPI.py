@@ -8,26 +8,12 @@ import json
 import time 
 
 
-## 나중에 싱글톤으로 만들것
-# class Select(Resource):
-#     def get(self):
-#         pass
-    
-#     @staticmethod
-#     def getSelectObject(idx):
-#         # idx = int(request.args["idx"])
-#         url = "http://127.0.0.1:5050/api/detection"
-#         response = requests.get(url)
-#         detected_objectList = response.json()["detected_objectList"]
-#         selectObject = None
-#         try:
-#             selectObject = detected_objectList[idx]
-#             return selectObject
-#         except IndexError as e:
-#             return e
 
 class Select(Resource):
     _instance = None
+    def get(self):
+        return "object selected"
+
     def __init__(self):
         if not Select._instance:
             print("Select.__init__ method called but nothing is created")
@@ -35,8 +21,10 @@ class Select(Resource):
             print("Select instance already created", self.getInstance())
         url = "http://127.0.0.1:5050/api/detection"
         response = requests.get(url)
-        detected_objectList = response.json()["detected_objectList"]
-        return detected_objectList
+        self.detected_objectList = response.json()["detected_objectList"]
+        
+    def getDetected(self):
+        return self.detected_objectList
 
 
     @classmethod

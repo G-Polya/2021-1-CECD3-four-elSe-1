@@ -54,7 +54,8 @@ def retrieval(idx):
     before = time.time()
 
     # idx = int(request.args["idx"])
-    selectObject = Select.getSelectObject(idx)
+    select = Select.getInstance()
+    selectObject = select.getDetected()[idx]
 
     selectObject_path = selectObject["objectImagePath"]
     selectObject_pil = Image.open(selectObject_path)
@@ -131,7 +132,7 @@ def showJSON(idx):
 
 api.add_resource(ModelLoader, "/")
 api.add_resource(Detection, "/api/detection")
-api.add_resource(Select, "/api/select")
+api.add_resource(Select, "/api/")
 # api.add_resource(Retrieval, "/api/retrieval")
 api.add_resource(Delete, "/delete")
 
