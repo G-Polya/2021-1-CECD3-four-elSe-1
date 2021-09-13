@@ -3,6 +3,8 @@ from flask_restful import Resource, Api
 from detectionAPI import ModelLoader, Detection
 from flask import Flask, render_template, request, jsonify
 import time
+import faiss
+
 
 from retrievalAPI import Select, Query
 from PIL import Image
@@ -73,10 +75,17 @@ def retrieval(idx):
     E_train_flatten = E_train.reshape((-1, np.prod(retrievalInstance.output_shape_model)))
     print("E_train_flatten.shape : ", E_train_flatten.shape)
 
-    calculator = retrievalInstance.similarityCalculator(E_train_flatten, n_neighbors=5)
     queryed_jsonList = query.getQueryed_jsonList()
-    retrieval_imagePool = [Image.open(json["objectImagePath"])for json in queryed_jsonList]
-    retrieval_indices = retrievalInstance.retrieval(E_test_flatten, calculator, retrieval_imagePool)
+
+    d = E_train_flatten.shape[1]
+    index = faiss.IndexFlatL2(d)
+    print("index.is_trained : ", index.is_trained)
+
+    index.add(E_train_flatten)
+    print("index.ntotal : ", index.ntotal)
+
+    k = 5
+    D, retrieval_indices = index.search(E_test_flatten,k)
 
     similar_json = []
     similar_json_url = []
