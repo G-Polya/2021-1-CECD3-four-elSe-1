@@ -7,24 +7,32 @@ import numpy as np
 import json
 import time 
 
+
+
 class Select(Resource):
+    _instance = None
     def get(self):
-        pass
-    
-    @staticmethod
-    def getSelectObject(idx):
-        # idx = int(request.args["idx"])
+        return "object selected"
+
+    def __init__(self):
+        if not Select._instance:
+            print("Select.__init__ method called but nothing is created")
+        else:
+            print("Select instance already created", self.getInstance())
         url = "http://127.0.0.1:5050/api/detection"
         response = requests.get(url)
-        detected_objectList = response.json()["detected_objectList"]
-        selectObject = None
-        try:
-            selectObject = detected_objectList[idx]
-            return selectObject
-        except IndexError as e:
-            return e
+        self.detected_objectList = response.json()["detected_objectList"]
+        
+    def getDetected(self):
+        return self.detected_objectList
 
 
+    @classmethod
+    def getInstance(cls):
+        if not cls._instance:
+            cls._instance = Select()
+
+        return cls._instance
 
 
 # 추후 mongoDB로 변경

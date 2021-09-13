@@ -49,19 +49,23 @@ class Delete(Resource):
 
         return "delete completed"
 
-
+from ModelLoader import ModelLoader
 def retrieval(idx):
     before = time.time()
 
     # idx = int(request.args["idx"])
-    selectObject = Select.getSelectObject(idx)
+    select = Select.getInstance()
+    selectObject = select.getDetected()[idx]
 
     selectObject_path = selectObject["objectImagePath"]
     selectObject_pil = Image.open(selectObject_path)
-    retrievalInstance = ImageRetrievalClass("IncepResNet", True, False)
+    modelLoader = ModelLoader.getInstance()
+    retrievalInstance = modelLoader.getRetrieval()
+    # retrievalInstance = ImageRetrievalClass("IncepResNet", True, False)
+    
+    # retrievalInstance.buildModel()
     retrievalInstance.readTestSet(selectObject_pil)
-    retrievalInstance.buildModel()
-
+    
     X_test = retrievalInstance.testTransform()
 
     E_test = retrievalInstance.predictTest(X_test)
@@ -84,6 +88,7 @@ def retrieval(idx):
     index.add(E_train_flatten)
     print("index.ntotal : ", index.ntotal)
 
+    print("Using FAISS Index")
     k = 5
     D, retrieval_indices = index.search(E_test_flatten,k)
 
@@ -127,7 +132,7 @@ def showJSON(idx):
 
 api.add_resource(ModelLoader, "/")
 api.add_resource(Detection, "/api/detection")
-api.add_resource(Select, "/api/select")
+api.add_resource(Select, "/api/")
 # api.add_resource(Retrieval, "/api/retrieval")
 api.add_resource(Delete, "/delete")
 
