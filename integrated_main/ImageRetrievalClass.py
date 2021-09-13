@@ -56,7 +56,7 @@ class ImageRetrievalClass:
         print("test image shape = {}".format(self.shape_img))
     
 
-    def buildModel(self):
+    def buildModel(self, shape_img):
         if self.modelName in ["simpleAE", "Resnet50AE", "stackedAE","vggAE"]:
             info = {
                 "shape_img": self.shape_img,
@@ -73,7 +73,7 @@ class ImageRetrievalClass:
             self.output_shape_model = self.model.getOutputshape()
         
         elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet", "EfficientNet"]:
-            pretrainedModel = PretrainedModel(self.modelName,self.shape_img)
+            pretrainedModel = PretrainedModel(self.modelName,shape_img)
             self.model = pretrainedModel.buildModel()
             self.shape_img_resize, self.input_shape_model, self.output_shape_model = pretrainedModel.makeInOut()
 
