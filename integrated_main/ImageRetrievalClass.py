@@ -12,13 +12,15 @@ from src.CV_plot_utils import plot_query_retrieval, plot_tsne, plot_reconstructi
 from src.AutoencoderRetrievalModel import AutoencoderRetrievalModel
 from src.PretrainedModel import PretrainedModel
 from src.AbstractAE import AbstractAE
-from sklearn.decomposition import PCA
+
+import numba
 
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 class ImageTransformer(object):
     def __init__(self, shape_resize):
         self.shape_resize = shape_resize
+
     
     def __call__(self, img):
         img_transformed = resize_img(img, self.shape_resize)
