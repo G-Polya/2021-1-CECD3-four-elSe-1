@@ -7,7 +7,7 @@ from multiprocessing import Pool
 from skimage.transform import resize
 import numba
 # Apply transformations to multiple images
-@numba.njit
+
 def apply_transformer(imgs, transformer, parallel=False):
     # if parallel:
     #     pool = Pool()
