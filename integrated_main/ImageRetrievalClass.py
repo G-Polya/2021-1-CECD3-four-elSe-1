@@ -17,11 +17,15 @@ import numba
 
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
+
+
 class ImageTransformer(object):
     def __init__(self, shape_resize):
-        self.shape_resize = shape_resize
 
-    
+        self.shape_resize = shape_resize
+        # print(type(shape))
+
+        
     def __call__(self, img):
         img_transformed = resize_img(img, self.shape_resize)
         img_transformed = normalize_img(img_transformed)
@@ -74,7 +78,7 @@ class ImageRetrievalClass:
             self.input_shape_model = self.model.getInputshape()
             self.output_shape_model = self.model.getOutputshape()
         
-        elif self.modelName in ["vgg19", "ResNet50v2", "IncepResNet", "EfficientNet"]:
+        elif self.modelName not in ["simpleAE", "Resnet50AE", "stackedAE","vggAE"]:
             pretrainedModel = PretrainedModel(self.modelName,shape_img)
             self.model = pretrainedModel.buildModel()
             self.shape_img_resize, self.input_shape_model, self.output_shape_model = pretrainedModel.makeInOut()
@@ -137,6 +141,7 @@ class ImageRetrievalClass:
         # print(" -> E_train_flatten.shape = {}".format(E_train_flatten.shape))
         return self.E_train
 
+    
     def predictTest(self, X_test):
         
         print("Inferencing embeddings using pre-trained model...")

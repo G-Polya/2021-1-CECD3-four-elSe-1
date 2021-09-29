@@ -9,20 +9,26 @@ class PretrainedModel:
         self.model = None
 
     def buildModel(self):
+        print(f"Loading {self.modelName} pre-trained model...")
         if self.modelName == "vgg19":
-            print("Loading VGG19 pre-trained model...")
+            # print("Loading VGG19 pre-trained model...")
             self.model = tf.keras.applications.vgg19.VGG19(weights='imagenet', include_top=False,input_shape=self.shape_img)
         elif self.modelName == "IncepResNet":
-            print("Loading IncepResNet pre-trained model...")
+            # print("Loading IncepResNet pre-trained model...")
             self.model = tf.keras.applications.inception_resnet_v2.InceptionResNetV2(weights="imagenet", include_top=False, input_shape=self.shape_img)
         elif self.modelName == "ResNet50v2":
-            print("Loading ResNet50v2 pre-trained model...")
+            # print("Loading ResNet50v2 pre-trained model...")
             self.model = tf.keras.applications.resnet_v2.ResNet50V2(weights="imagenet", include_top=False, input_shape=self.shape_img)
         elif self.modelName=="EfficientNet":
-            print("Loading EfficientNet pre-trained model...")
+            # print("Loading EfficientNet pre-trained model...")
             self.model = tf.keras.applications.efficientnet.EfficientNetB4(weights="imagenet", include_top=False, input_shape=self.shape_img)
             # self.model = tf.keras.applications.efficientnet.EfficientNetB7(weights="imagenet", include_top=False, input_shape=self.shape_img)
-        
+        elif self.modelName=="MobileNetV3":
+            
+            self.model = tf.keras.applications.MobileNetV3Small(weights="imagenet", include_top=False, input_shape=self.shape_img)
+        elif self.modelName=="MobileNetV2":
+            self.model = tf.keras.applications.mobilenet_v2.MobileNetV2(weights="imagenet", include_top=False, input_shape=self.shape_img)
+
         # self.model.summary()
         
         return self.model
