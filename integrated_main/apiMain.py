@@ -82,7 +82,7 @@ def retrieval(idx):
     queryed_jsonList = query.getQueryed_jsonList()
 
     d = E_train_flatten.shape[1]
-    index = faiss.IndexFlatL2(d)
+    index = faiss.IndexFlatIP(d)
     print("index.is_trained : ", index.is_trained)
 
     index.add(E_train_flatten)

@@ -13,7 +13,7 @@ from src.AutoencoderRetrievalModel import AutoencoderRetrievalModel
 from src.PretrainedModel import PretrainedModel
 from src.AbstractAE import AbstractAE
 
-import numba
+
 
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
