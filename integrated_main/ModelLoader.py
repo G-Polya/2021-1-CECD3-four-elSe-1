@@ -21,7 +21,7 @@ class ModelLoader(Resource):
         self.__model =attempt_load(weights, map_location=self.__device) 
         self.__modelc = load_classifier(name="resnet50", n=2)
 
-        self.__retrival = ImageRetrievalClass("IncepResNet",True,False)
+        self.__retrival = ImageRetrievalClass("MobileNetV3",True,False)
         self.__retrival.buildModel(shape_img=(256,256,3))
 
 

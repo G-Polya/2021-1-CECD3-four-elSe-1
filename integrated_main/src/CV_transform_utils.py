@@ -7,14 +7,15 @@ from multiprocessing import Pool
 from skimage.transform import resize
 
 # Apply transformations to multiple images
+
 def apply_transformer(imgs, transformer, parallel=False):
-    if parallel:
-        pool = Pool()
-        imgs_transform = pool.map(transformer, [img for img in imgs])
-        pool.close()
-        pool.join()
-    else:
-        imgs_transform = [transformer(img) for img in imgs]
+    # if parallel:
+    #     pool = Pool()
+    #     imgs_transform = pool.map(transformer, [img for img in imgs])
+    #     pool.close()
+    #     pool.join()
+    # else:
+    imgs_transform = [transformer(img) for img in imgs]
     return imgs_transform
 
 # Normalize image data [0, 255] -> [0.0, 1.0]

@@ -39,7 +39,7 @@ class Select(Resource):
 class Query:
     def __init__(self, tag):
         self.__tag = tag
-        self.__jsonFiles_path = glob("./jsonFiles/*.json")
+        self.__jsonFiles_path = glob("./mobileJson/*.json")
         self.__queryed_jsonList = list()
     
     
